@@ -48,7 +48,91 @@
             border: 1px solid rgba(167, 92, 232, 0.4);
             position: relative;
             z-index: 1;
+            /* CAMBIO IMPORTANTE: Por defecto el contenedor del chat estará oculto */
+            display: none; 
+            flex-direction: column; /* Para organizar el contenido verticalmente */
         }
+
+        /* NUEVO: Estilos para la sección inicial de bienvenida/reglas */
+        #welcome-screen {
+            background-color: rgba(30, 30, 40, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 0 40px rgba(167, 92, 232, 0.7);
+            padding: 30px;
+            width: 90%;
+            max-width: 650px;
+            animation: fadeIn 1.5s ease-out;
+            border: 1px solid rgba(167, 92, 232, 0.4);
+            position: relative;
+            z-index: 1;
+            display: flex; /* CAMBIO IMPORTANTE: Visible por defecto */
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            height: fit-content; /* Ajusta la altura al contenido */
+            max-height: 90vh; /* Limita la altura para no desbordar */
+            overflow-y: auto; /* Permite scroll si el contenido es mucho */
+        }
+
+        #welcome-screen h1 {
+            font-size: 2.5em;
+            color: #fff;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px #a75ce8;
+        }
+        #welcome-screen p {
+            font-size: 1.1em;
+            color: #d1baff;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        #welcome-screen ul {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 30px 0;
+            text-align: left;
+            width: 90%;
+            max-width: 450px;
+        }
+        #welcome-screen ul li {
+            background-color: rgba(60, 60, 80, 0.5);
+            margin-bottom: 10px;
+            padding: 12px 18px;
+            border-radius: 8px;
+            border-left: 4px solid #a75ce8;
+            font-size: 1em;
+            color: #e0e0e0;
+            display: flex;
+            align-items: center;
+        }
+        #welcome-screen ul li::before {
+            content: '✓'; /* Icono de check */
+            color: #4CAF50; /* Color verde */
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        #start-chat-button {
+            background-color: #4CAF50; /* Verde para el botón de inicio */
+            color: #fff;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.3em;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+            margin-top: 20px; /* Separación del contenido */
+        }
+        #start-chat-button:hover {
+            background-color: #45a049;
+            transform: translateY(-3px);
+        }
+        #start-chat-button:active {
+            transform: translateY(0);
+        }
+
 
         @keyframes fadeIn {
             0% { opacity: 0; transform: translateY(-30px); }
@@ -141,6 +225,8 @@
             border: 1px dashed #a75ce8;
             animation: revealName 1.5s ease-out forwards;
             opacity: 0;
+            /* CAMBIO IMPORTANTE: Solo se mostrará cuando se active el chat */
+            display: none; 
         }
 
         @keyframes revealName {
@@ -161,6 +247,8 @@
             margin-bottom: 25px;
             border-left: 6px solid #a75ce8;
             box-shadow: 0 0 15px rgba(167, 92, 232, 0.3);
+            /* CAMBIO IMPORTANTE: Solo se mostrará cuando se active el chat */
+            display: none; 
         }
 
         .question-section h2 {
@@ -185,6 +273,8 @@
             border: 1px solid rgba(167, 92, 232, 0.2);
             /* Añadido margen inferior para separar del botón de envío */
             margin-bottom: 20px; 
+            /* CAMBIO IMPORTANTE: Solo se mostrará cuando se active el chat */
+            display: none; 
         }
 
         .chat-section::-webkit-scrollbar {
@@ -380,7 +470,36 @@
 <body>
     <button id="auth-button">Iniciar Sesión (Admin)</button>
 
-    <div class="container">
+    <div id="welcome-screen">
+        <header class="welcome-header">
+            <div class="profile-container">
+                <div class="profile-cards-wrapper">
+                    <a href="URL_CANAL_YOUTUBE_TUYO" target="_blank" class="profile-card">
+                        <img src="https://via.placeholder.com/100/FF00FF/FFFFFF?text=Tu+Perfil" alt="Tu Perfil" class="profile-image"> 
+                        <span class="profile-name">NOMBRE_TU_CANAL</span>
+                    </a>
+                    <a href="URL_CANAL_YOUTUBE_COLABORADOR" target="_blank" class="profile-card">
+                        <img src="https://via.placeholder.com/100/800080/FFFFFF?text=Colaborador" alt="Perfil Colaborador" class="profile-image">
+                        <span class="profile-name">NOMBRE_CANAL_COLABORADOR</span>
+                    </a>
+                </div>
+                <h1 id="collaborative-title-welcome">Nombre Colaborativo</h1> 
+            </div>
+            <p class="welcome-message">¡Bienvenido/a a la dinámica anónima!</p>
+            <p>Lee las siguientes reglas para participar:</p>
+        </header>
+        
+        <ul>
+            <li>Sé respetuoso/a con todos los participantes.</li>
+            <li>No compartas información personal identificable.</li>
+            <li>Mantén un lenguaje apropiado y positivo.</li>
+            <li>Diviértete y sé parte de la conversación.</li>
+        </ul>
+
+        <button id="start-chat-button">Continuar al Chat</button>
+    </div>
+
+    <div class="container" id="chat-main-content">
         <header class="welcome-header">
             <div class="profile-container">
                 <div class="profile-cards-wrapper">
@@ -395,7 +514,7 @@
                 </div>
                 <h1 id="collaborative-title">Nombre Colaborativo</h1> 
             </div>
-            <p class="welcome-message">¡Bienvenido/a a la dinámica anónima!</p>
+            <p class="welcome-message">¡Participa en el chat anónimo!</p>
         </header>
 
         <div class="anonymous-name-section">
@@ -443,6 +562,10 @@
             "Gema Anónima", "Espectro Amistoso", "Susurro Violeta", "Código Desconocido"
         ];
 
+        const welcomeScreen = document.getElementById('welcome-screen'); // NUEVO
+        const startChatButton = document.getElementById('start-chat-button'); // NUEVO
+        const chatMainContent = document.getElementById('chat-main-content'); // NUEVO
+        
         const anonymousNameElement = document.getElementById('anonymous-name');
         const questionElement = document.getElementById('current-question');
         const chatMessagesElement = document.getElementById('chat-messages');
@@ -456,12 +579,17 @@
         // Obtener el nombre del equipo colaborativo del H1 y actualizar los prefijos de la pregunta
         const collaborativeTitleElement = document.getElementById('collaborative-title');
         const questionTitlePrefixElement = document.getElementById('question-title-prefix');
+        // NUEVO: Obtener el título colaborativo de la pantalla de bienvenida también
+        const collaborativeTitleWelcomeElement = document.getElementById('collaborative-title-welcome');
+
 
         // Función para actualizar los títulos de las preguntas
         const updateQuestionTitles = () => {
-            const currentCollaborativeName = collaborativeTitleElement.textContent;
+            // Usa el texto del título colaborativo en la pantalla de bienvenida para inicializar
+            const currentCollaborativeName = collaborativeTitleWelcomeElement.textContent; // CAMBIO
+            // Asegúrate de que ambos títulos estén sincronizados, aunque uno esté oculto
+            collaborativeTitleElement.textContent = currentCollaborativeName; 
             questionTitlePrefixElement.textContent = `Pregunta de ${currentCollaborativeName}:`;
-            // Asegúrate de que este elemento existe antes de intentar acceder a textContent
             if (questionElement) {
                 questionElement.textContent = `Esperando la pregunta de ${currentCollaborativeName}...`;
             }
@@ -498,8 +626,9 @@
                 localStorage.setItem('kayla_anonymous_name', currentAnonymousName);
             }
             anonymousNameElement.textContent = `Tu identidad anónima: ${currentAnonymousName}`;
-            anonymousNameElement.parentElement.style.opacity = '1';
-            anonymousNameElement.parentElement.style.transform = 'translateY(0)';
+            // Esto se manejará al mostrar el chatMainContent
+            // anonymousNameElement.parentElement.style.opacity = '1';
+            // anonymousNameElement.parentElement.style.transform = 'translateY(0)';
         };
 
         // Función para mostrar un mensaje en el chat
@@ -608,13 +737,32 @@
 
         // --- Inicialización al cargar la página ---
         document.addEventListener('DOMContentLoaded', () => {
-            generateAnonymousName(); // Genera o recupera el nombre anónimo
+            // CAMBIO: La generación del nombre anónimo y la solicitud de historial se mueven al hacer clic en 'Continuar'
+            // generateAnonymousName(); 
+            // socket.emit('request chat history'); 
+            // socket.emit('request question update'); // Solicita la pregunta actual al iniciar
 
             sendButton.addEventListener('click', sendMessage);
             messageInput.addEventListener('keypress', (event) => {
                 if (event.key === 'Enter') {
                     sendMessage();
                 }
+            });
+
+            // NUEVO: Manejador del botón "Continuar al Chat"
+            startChatButton.addEventListener('click', () => {
+                welcomeScreen.style.display = 'none'; // Oculta la pantalla de bienvenida
+                chatMainContent.style.display = 'flex'; // Muestra el contenido principal del chat
+                
+                // Ahora sí, genera el nombre anónimo y solicita los datos del chat
+                generateAnonymousName(); 
+                socket.emit('request chat history'); 
+                socket.emit('request question update'); 
+
+                // Muestra las secciones que estaban ocultas por defecto en el chat-main-content
+                document.querySelector('.anonymous-name-section').style.display = 'block';
+                document.querySelector('.question-section').style.display = 'block';
+                document.querySelector('.chat-section').style.display = 'flex'; // Chat section es flex para input area
             });
         });
     </script>
