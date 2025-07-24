@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kanonimo - Tu espacio anónimo con Kayla</title>
+    <title>Sin-Manual - Tu espacio anónimo con Host</title>
     <link rel="icon" href="favicon.ico" type="image/x-icon">
 
     <style>
+        /* ... (Your existing CSS here, no changes needed) ... */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #2c003e; /* Lila oscuro de fondo */
@@ -19,7 +20,7 @@
             overflow: hidden; /* Oculta barras de scroll del body */
             /* Efecto de partículas sutil para el fondo */
             background-image: radial-gradient(circle at top left, rgba(147, 112, 219, 0.2) 0%, transparent 50%),
-                              radial-gradient(circle at bottom right, rgba(218, 112, 214, 0.2) 0%, transparent 50%);
+                                radial-gradient(circle at bottom right, rgba(218, 112, 214, 0.2) 0%, transparent 50%);
             background-size: 150% 150%;
             animation: backgroundPan 30s linear infinite alternate;
         }
@@ -53,7 +54,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .kanonimo-title {
+        .kanonimo-title { /* Renombrado para mantener la clase CSS, pero el texto es "Sinmanual" */
             color: #da70d6; /* Lila vibrante para el título */
             font-size: 3em;
             margin-bottom: 10px;
@@ -458,7 +459,7 @@
                 max-height: 98vh; /* Más altura disponible en móviles */
             }
 
-            .kanonimo-title {
+            .kanonimo-title { /* Renombrado para mantener la clase CSS, pero el texto es "Sinmanual" */
                 font-size: 2.2em; /* Título más pequeño */
             }
 
@@ -573,20 +574,20 @@
 
     <div class="container">
         <section id="welcome-section" class="active-section">
-            <h1 class="kanonimo-title">Kanonimo 🤫</h1>
+            <h1 class="kanonimo-title">Sinmanual 🤫</h1>
 
             <div class="profile-cards-wrapper">
                 <a href="https://www.youtube.com/@Kayla_lan" target="_blank" class="profile-card">
-                    <img src="https://via.placeholder.com/90/DA70D6/FFFFFF?text=KL" alt="Foto de perfil de Kayla" class="profile-pic">
+                    <img src="kayla.png" alt="Foto de perfil de Kayla" class="profile-pic">
                     <span class="channel-name">Kayla_lan</span>
                 </a>
-                <a href="https://www.youtube.com/@OtroCanalDeEjemplo" target="_blank" class="profile-card">
+                <a href="https://www.youtube.com/@LoscuatesGamer" target="_blank" class="profile-card">
                     <img src="https://via.placeholder.com/90/DA70D6/FFFFFF?text=CL" alt="Foto de perfil de Colaborador" class="profile-pic">
-                    <span class="channel-name">Colaborador</span>
+                    <span class="channel-name">Fatboy</span>
                 </a>
             </div>
 
-            <p class="welcome-message">¡Bienvenido a tu espacio anónimo con Kayla!</p>
+            <p class="welcome-message">¡Bienvenido a tu espacio anónimo con los sinmanual!</p>
 
             <div class="anonymous-name-display">
                 <p>Tu nombre de usuario aleatorio es:</p>
@@ -594,7 +595,7 @@
             </div>
 
             <div class="rules-box">
-                <h3>Reglas de Kanonimo</h3>
+                <h3>Reglas de Sinmanual</h3>
                 <ul>
                     <li><strong>Respeta a los demás:</strong> Trata a todos con amabilidad.</li>
                     <li><strong>No al bullying ni al acoso:</strong> Mantenemos un ambiente seguro para todos.</li>
@@ -613,15 +614,15 @@
         </section>
 
         <section id="waiting-section" class="hidden-section">
-            <h2 class="waiting-message">Esperando la pregunta de Kayla...</h2>
+            <h2 class="waiting-message">Esperando la pregunta de Host</h2>
             <div class="loading-animation"></div>
         </section>
 
         <section id="chat-section" class="hidden-section">
-            <h2 class="chat-title">Pregunta de Kayla: <span id="current-question">Cargando pregunta...</span></h2>
+            <h2 class="chat-title">Pregunta del Host: <span id="current-question">Cargando pregunta...</span></h2>
             <div class="chat-messages" id="chat-messages">
                 <div class="chat-message">
-                    <span class="message-username">Kanonimo Bot:</span>
+                    <span class="message-username">Sinmanual Bot:</span>
                     <p class="message-content">¡Hola! Este es un espacio anónimo. ¡Sé respetuoso/a y diviértete!</p>
                 </div>
             </div>
@@ -642,10 +643,26 @@
         </section>
     </div>
 
-    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
     <script>
-        // ¡IMPORTANTE! Asegúrate de que esta URL sea la de tu backend de Render.com
-        const socket = io('https://michat-backend.onrender.com');
+        // Your Firebase project configuration (¡ESTO HA SIDO REEMPLAZADO CON TUS VALORES!)
+        const firebaseConfig = {
+          apiKey: "AIzaSyA1aIQmQtk8nCgkfT45QFGHdFDJ5BADcaA",
+          authDomain: "kanonimo-1f8d0.firebaseapp.com",
+          projectId: "kanonimo-1f8d0",
+          storageBucket: "kanonimo-1f8d0.firebasestorage.app",
+          messagingSenderId: "22588141435",
+          appId: "1:22588141435:web:87ef8dd8f0ffdecbfc17de",
+          measurementId: "G-71947BXLTH"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
 
         document.addEventListener('DOMContentLoaded', () => {
             const welcomeSection = document.getElementById('welcome-section');
@@ -656,110 +673,150 @@
             const continueButton = document.getElementById('continue-button');
             const messageInput = document.getElementById('message-input');
             const sendMessageButton = document.getElementById('send-message-button');
-            const chatMessagesElement = document.getElementById('chat-messages'); // Renombrado para evitar conflicto
+            const chatMessagesElement = document.getElementById('chat-messages');
             const currentQuestionDisplay = document.getElementById('current-question');
             const authButton = document.getElementById('auth-button');
             const adminQuestionInput = document.getElementById('admin-question-input');
             const updateQuestionBtn = document.getElementById('update-question-btn');
-            const adminControls = document.querySelector('.admin-controls'); // Referencia al div de controles admin
+            const adminControls = document.querySelector('.admin-controls');
 
-            let userName = ''; // Almacena el nombre de usuario generado.
+            let userName = '';
+            let isAdmin = false; // Track admin status
 
-            // --- Funciones de manejo de UI ---
+            // Variables para almacenar las funciones de "desuscripción" (unsubscribe) de los escuchadores
+            let unsubscribeFromMessages = null;
+            let unsubscribeFromQuestion = null;
+
+            // --- UI Section Handling (No change needed here) ---
             function showSection(sectionToShow) {
-                // Oculta todas las secciones
                 [welcomeSection, waitingSection, chatSection].forEach(section => {
                     section.classList.remove('active-section');
                     section.classList.add('hidden-section');
-                    section.style.opacity = '0'; // Para la transición suave
+                    section.style.opacity = '0';
                 });
-
-                // Muestra la sección deseada
                 sectionToShow.classList.remove('hidden-section');
                 sectionToShow.classList.add('active-section');
-                // Un pequeño retraso para permitir que 'display' cambie antes de animar opacidad
                 setTimeout(() => {
                     sectionToShow.style.opacity = '1';
                 }, 50);
             }
 
-            // --- Generar nombre aleatorio al cargar la página ---
+            // --- Generate Random Name (No change needed here) ---
             function generateRandomName() {
                 const adjectives = ['Misterioso', 'Silencioso', 'Sutil', 'Velado', 'Enigmático', 'Secreto', 'Oculto', 'Fantasma'];
                 const nouns = ['Sombra', 'Susurro', 'Eco', 'Velo', 'Aura', 'Reflejo', 'Fragmento', 'Espectro'];
-                const randomNumber = Math.floor(Math.random() * 900) + 100; // Número de 3 cifras (100-999)
+                const randomNumber = Math.floor(Math.random() * 900) + 100;
                 const randomAdjective = adjectives[Math.floor(Math.random() * adjectives.length)];
                 const randomNoun = nouns[Math.floor(Math.random() * nouns.length)];
                 userName = `${randomAdjective} ${randomNoun} ${randomNumber}`;
                 generatedUsernameDisplay.textContent = userName;
             }
-            generateRandomName(); // Llama a la función al cargar la página.
+            generateRandomName();
 
-            // --- Habilitar botón "Continuar" al aceptar reglas ---
+            // --- Enable "Continue" Button (No change needed here) ---
             acceptRulesCheckbox.addEventListener('change', () => {
                 continueButton.disabled = !acceptRulesCheckbox.checked;
             });
 
-            // --- Manejar el flujo de las secciones al hacer clic en "Continuar" ---
-            continueButton.addEventListener('click', () => {
+            // --- Handle Section Flow with Firebase calls ---
+            continueButton.addEventListener('click', async () => {
                 if (acceptRulesCheckbox.checked) {
-                    showSection(waitingSection); // Mostrar la sección de espera
+                    showSection(waitingSection);
                     console.log('Botón Continuar presionado. Transicionando a la sección de espera.');
 
-                    // Simula la espera antes de mostrar el chat (aquí iría la conexión real al servidor).
-                    setTimeout(() => {
-                        showSection(chatSection); // Mostrar la sección del chat
+                    try {
+                        // Wait for 3 seconds before showing the chat
+                        await new Promise(resolve => setTimeout(resolve, 3000));
+
+                        showSection(chatSection);
                         console.log('Mostrando la sección del chat.');
 
-                        // Solicitar historial de chat y pregunta actual al servidor
-                        socket.emit('request chat history');
-                        socket.emit('request question update');
-                    }, 3000); // Espera 3 segundos antes de mostrar el chat.
+                        // Fetch initial chat history and question from Firestore
+                        // Ahora estas funciones primero desuscriben el escuchador anterior
+                        fetchChatHistory();
+                        fetchQuestion();
+                    } catch (error) {
+                        console.error("Error during chat initialization:", error);
+                        alert("Ocurrió un error al cargar el chat. Por favor, inténtalo de nuevo.");
+                        showSection(welcomeSection); // Go back to welcome if error
+                    }
+
                 } else {
-                    alert('¡Oh no! Debes aceptar las reglas para continuar en Kanonimo.');
+                    alert('¡Oh no! Debes aceptar las reglas para continuar en Sinmanual.');
                 }
             });
 
-            // --- Funcionalidad de Admin ---
-            authButton.addEventListener('click', () => {
-                if (document.body.classList.contains('admin-mode')) {
-                    document.body.classList.remove('admin-mode');
-                    authButton.textContent = 'Iniciar Sesión (Admin)';
-                    alert('Sesión de administrador cerrada.');
-                    // Quitar los botones de borrar al cerrar sesión de admin
-                    document.querySelectorAll('.delete-btn').forEach(btn => btn.remove());
-                    // Vuelve a cargar el historial para que los botones desaparezcan
-                    socket.emit('request chat history');
+            // --- Admin Authentication (Firebase Auth) ---
+            authButton.addEventListener('click', async () => {
+                if (isAdmin) {
+                    // Sign out if already logged in
+                    await auth.signOut();
+                    // Al cerrar sesión, el onAuthStateChanged se encargará de actualizar el UI
                 } else {
+                    const email = prompt("Introduce el correo electrónico del administrador:");
+                    if (!email) return; // User cancelled
+
                     const password = prompt("Introduce la contraseña de administrador:");
-                    // Contraseña de admin: FatKay2059
-                    if (password === "FatKay2059") {
-                        document.body.classList.add('admin-mode');
-                        authButton.textContent = 'Cerrar Sesión (Admin)';
+                    if (!password) return; // User cancelled
+
+                    try {
+                        await auth.signInWithEmailAndPassword(email, password);
                         alert('Autenticación de administrador exitosa.');
-                        // Al autenticarse como admin, solicitar historial para ver botones de borrar
-                        socket.emit('request chat history');
-                        socket.emit('request question update');
-                    } else if (password) {
-                        alert('Contraseña incorrecta.');
+                    } catch (error) {
+                        console.error("Error de autenticación:", error.message);
+                        alert(`Error de autenticación: ${error.message}`);
                     }
                 }
             });
 
-            updateQuestionBtn.addEventListener('click', () => {
+            // Listen for auth state changes to update isAdmin status and refresh UI
+            auth.onAuthStateChanged(user => {
+                if (user) {
+                    isAdmin = true;
+                    document.body.classList.add('admin-mode');
+                    authButton.textContent = 'Cerrar Sesión (Admin)';
+                } else {
+                    isAdmin = false;
+                    document.body.classList.remove('admin-mode');
+                    authButton.textContent = 'Iniciar Sesión (Admin)';
+                }
+                // Cada vez que el estado de autenticación cambia, refrescamos los escuchadores
+                // Esto asegura que los botones de eliminar se muestren/oculten correctamente
+                fetchChatHistory();
+                fetchQuestion();
+            });
+
+
+            // --- Admin: Update Question (Firestore) ---
+            updateQuestionBtn.addEventListener('click', async () => {
+                if (!isAdmin) {
+                    alert("No tienes permisos de administrador para actualizar la pregunta.");
+                    return;
+                }
                 const newQuestionText = adminQuestionInput.value.trim();
                 if (newQuestionText) {
-                    socket.emit('admin:set question', newQuestionText);
+                    try {
+                        // Store the question in a document, e.g., 'app_settings/current_question'
+                        await db.collection('app_settings').doc('current_question').set({
+                            question: newQuestionText,
+                            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                        });
+                        alert('Pregunta actualizada exitosamente.');
+                    } catch (error) {
+                        console.error("Error al actualizar la pregunta:", error);
+                        alert("Error al actualizar la pregunta. Inténtalo de nuevo.");
+                    }
                 } else {
                     alert("Por favor, escribe una pregunta para actualizar.");
                 }
             });
 
-            // --- Manejo de mensajes del chat ---
+            // --- Display Message (Reusable) ---
             function displayMessage(messageData) {
                 const messageDiv = document.createElement('div');
                 messageDiv.classList.add('chat-message');
-                messageDiv.setAttribute('data-timestamp', messageData.timestamp); // Usamos timestamp como ID
+                // Use Firebase document ID as a unique identifier for deletion
+                messageDiv.setAttribute('data-id', messageData.id);
 
                 const usernameSpan = document.createElement('span');
                 usernameSpan.classList.add('message-username');
@@ -772,31 +829,44 @@
                 messageDiv.appendChild(usernameSpan);
                 messageDiv.appendChild(contentP);
 
-                // Añadir botón de eliminar si es modo administrador
-                if (document.body.classList.contains('admin-mode')) {
+                // Add delete button only if in admin mode
+                if (isAdmin) {
                     const deleteBtn = document.createElement('button');
                     deleteBtn.classList.add('delete-btn');
                     deleteBtn.textContent = 'X';
-                    deleteBtn.onclick = () => {
+                    deleteBtn.onclick = async () => {
                         if (confirm('¿Estás seguro de que quieres eliminar este comentario?')) {
-                            socket.emit('admin:delete message', messageData.timestamp);
+                            try {
+                                await db.collection('messages').doc(messageData.id).delete();
+                                console.log('Mensaje eliminado:', messageData.id);
+                            } catch (error) {
+                                console.error("Error al eliminar el mensaje:", error);
+                                alert("Error al eliminar el mensaje. Inténtalo de nuevo.");
+                            }
                         }
                     };
                     messageDiv.appendChild(deleteBtn);
                 }
 
                 chatMessagesElement.appendChild(messageDiv);
-                chatMessagesElement.scrollTop = chatMessagesElement.scrollHeight; // Desplaza al último mensaje
+                chatMessagesElement.scrollTop = chatMessagesElement.scrollHeight;
             }
 
-            sendMessageButton.addEventListener('click', () => {
+            // --- Send Message (Firestore) ---
+            sendMessageButton.addEventListener('click', async () => {
                 const message = messageInput.value.trim();
                 if (message) {
-                    socket.emit('chat message', {
-                        username: userName, // Usa el nombre generado
-                        content: message
-                    });
-                    messageInput.value = ''; // Limpia el campo
+                    try {
+                        await db.collection('messages').add({
+                            username: userName,
+                            content: message,
+                            timestamp: firebase.firestore.FieldValue.serverTimestamp() // Server-side timestamp
+                        });
+                        messageInput.value = '';
+                    } catch (error) {
+                        console.error("Error al enviar el mensaje:", error);
+                        alert("Error al enviar el mensaje. Inténtalo de nuevo.");
+                    }
                 } else {
                     alert("¡Ups! No puedes enviar un mensaje vacío.");
                 }
@@ -808,38 +878,76 @@
                 }
             });
 
-            // --- Eventos de Socket.IO ---
-            socket.on('chat history', (history) => {
-                chatMessagesElement.innerHTML = ''; // Limpia antes de cargar el historial
-                history.forEach(msg => displayMessage(msg));
-            });
-
-            socket.on('chat message', (msg) => {
-                displayMessage(msg);
-            });
-
-            socket.on('question update', (question) => {
-                currentQuestionDisplay.textContent = question;
-                // Si el admin está activo, también actualiza su input
-                if (document.body.classList.contains('admin-mode')) {
-                    adminQuestionInput.value = question;
+            // --- Fetch Chat History (Firestore Real-time Listener) ---
+            function fetchChatHistory() {
+                // Si ya hay un escuchador activo, lo desuscribimos primero
+                if (unsubscribeFromMessages) {
+                    unsubscribeFromMessages();
+                    console.log('Escuchador de mensajes de Firestore anterior desuscrito.');
                 }
-            });
 
-            socket.on('message deleted', (timestampToDelete) => {
-                const messageToDelete = chatMessagesElement.querySelector(`[data-timestamp="${timestampToDelete}"]`);
-                if (messageToDelete) {
-                    messageToDelete.remove();
+                // Limpiar los mensajes existentes antes de añadir los nuevos
+                chatMessagesElement.innerHTML = `
+                    <div class="chat-message">
+                        <span class="message-username">Sinmanual Bot:</span>
+                        <p class="message-content">¡Hola! Este es un espacio anónimo. ¡Sé respetuoso/a y diviértete!</p>
+                    </div>
+                `;
+
+                // Configurar un nuevo escuchador en tiempo real para los mensajes, ordenados por fecha
+                unsubscribeFromMessages = db.collection('messages').orderBy('timestamp').onSnapshot(snapshot => {
+                    snapshot.docChanges().forEach(change => {
+                        const messageData = change.doc.data();
+                        messageData.id = change.doc.id; // Obtener el ID del documento
+
+                        if (change.type === 'added') {
+                            displayMessage(messageData);
+                        }
+                        if (change.type === 'removed') {
+                            // Encontrar y eliminar el elemento del mensaje del DOM
+                            const messageElement = chatMessagesElement.querySelector(`[data-id="${messageData.id}"]`);
+                            if (messageElement) {
+                                messageElement.remove();
+                            }
+                        }
+                        // 'modified' no se maneja explícitamente aquí, pero para un chat añadir/eliminar suele ser suficiente.
+                    });
+                    chatMessagesElement.scrollTop = chatMessagesElement.scrollHeight; // Desplazarse al final en un nuevo mensaje
+                }, error => {
+                    console.error("Error al obtener el historial del chat:", error);
+                });
+            }
+
+            // --- Fetch Current Question (Firestore Real-time Listener) ---
+            function fetchQuestion() {
+                // Si ya hay un escuchador activo, lo desuscribimos primero
+                if (unsubscribeFromQuestion) {
+                    unsubscribeFromQuestion();
+                    console.log('Escuchador de pregunta de Firestore anterior desuscrito.');
                 }
-            });
 
-            socket.on('chat cleared', () => {
-                chatMessagesElement.innerHTML = '';
-                const initialMessageDiv = document.createElement('div');
-                initialMessageDiv.classList.add('chat-message');
-                initialMessageDiv.innerHTML = '<span class="message-username">Kanonimo Bot:</span><p class="message-content">¡Hola! Este es un espacio anónimo. ¡Sé respetuoso/a y diviértete!</p>';
-                chatMessagesElement.appendChild(initialMessageDiv);
-            });
+                // Escuchar cambios en el documento 'current_question'
+                unsubscribeFromQuestion = db.collection('app_settings').doc('current_question').onSnapshot(docSnapshot => {
+                    if (docSnapshot.exists) {
+                        const data = docSnapshot.data();
+                        currentQuestionDisplay.textContent = data.question;
+                        if (isAdmin) {
+                            adminQuestionInput.value = data.question;
+                        }
+                    } else {
+                        currentQuestionDisplay.textContent = 'Aún no hay pregunta. ¡Mantente atento!';
+                        if (isAdmin) {
+                            adminQuestionInput.value = '';
+                        }
+                    }
+                }, error => {
+                    console.error("Error al obtener la pregunta:", error);
+                });
+            }
+
+            // Initial fetches on page load if user goes directly to chat section (unlikely with your current flow)
+            // fetchChatHistory(); // Will be called after 'continue' button
+            // fetchQuestion();   // Will be called after 'continue' button
         });
     </script>
 </body>
