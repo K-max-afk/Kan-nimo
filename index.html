@@ -3,338 +3,516 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat Anónimo Kayla_lan</title>
+    <title>Kanonimo - Tu espacio anónimo con Kayla</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+
     <style>
-        /* Estilos CSS */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #1a1a2e; /* Fondo oscuro, casi negro, para misterio */
-            color: #e0e0e0; /* Color de texto suave */
-            margin: 0;
-            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #2c003e; /* Lila oscuro de fondo */
+            color: #e0b0ff; /* Texto lila claro */
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            overflow: hidden; /* Para animaciones de fondo */
-            position: relative;
+            margin: 0;
+            overflow: hidden; /* Oculta barras de scroll del body */
+            /* Efecto de partículas sutil para el fondo */
+            background-image: radial-gradient(circle at top left, rgba(147, 112, 219, 0.2) 0%, transparent 50%),
+                              radial-gradient(circle at bottom right, rgba(218, 112, 214, 0.2) 0%, transparent 50%);
+            background-size: 150% 150%;
+            animation: backgroundPan 30s linear infinite alternate;
         }
 
-        /* Animación de fondo sutil de partículas */
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, rgba(167, 92, 232, 0.1) 0%, rgba(26, 26, 46, 0.8) 70%);
-            animation: backgroundPulse 15s infinite alternate;
-            z-index: -1;
-        }
-
-        @keyframes backgroundPulse {
-            0% { transform: scale(1); opacity: 0.8; }
-            100% { transform: scale(1.1); opacity: 1; }
+        @keyframes backgroundPan {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
         }
 
         .container {
-            background-color: rgba(30, 30, 40, 0.95); /* Contenedor semi-transparente oscuro */
+            background-color: rgba(0, 0, 0, 0.7); /* Fondo semi-transparente para el contenido */
+            padding: 40px;
             border-radius: 15px;
-            box-shadow: 0 0 40px rgba(167, 92, 232, 0.7); /* Sombra lila más intensa */
-            padding: 30px;
-            width: 90%;
-            max-width: 650px;
-            animation: fadeIn 1.5s ease-out; /* Animación de entrada más suave */
-            border: 1px solid rgba(167, 92, 232, 0.4); /* Borde lila sutil */
-            position: relative;
-            z-index: 1;
-        }
-
-        @keyframes fadeIn {
-            0% { opacity: 0; transform: translateY(-30px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-
-        .welcome-header {
+            box-shadow: 0 0 30px rgba(128, 0, 128, 0.5); /* Sombra lila para el contenedor */
             text-align: center;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid rgba(167, 92, 232, 0.3); /* Línea lila divisoria */
+            width: 90%;
+            max-width: 600px;
+            max-height: 95vh; /* Limita la altura del contenedor principal */
+            overflow-y: auto; /* Permite scroll en el contenedor si el contenido es muy largo */
+            position: relative;
+            z-index: 10;
+            opacity: 0; /* Inicialmente oculto para animación de entrada */
+            transform: translateY(20px);
+            animation: fadeInContent 1s forwards;
+            animation-delay: 0.5s;
         }
 
-        .profile-container {
+        @keyframes fadeInContent {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .kanonimo-title {
+            color: #da70d6; /* Lila vibrante para el título */
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(218, 112, 214, 0.7); /* Sombra de texto lila */
+        }
+
+        .channel-info {
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-bottom: 15px;
+            flex-direction: column; /* Apila elementos verticalmente */
+            align-items: center; /* Centra horizontalmente */
+            margin-bottom: 20px;
         }
 
-        .profile-image {
-            width: 100px;
-            height: 100px;
+        .profile-pic-placeholder {
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
-            border: 4px solid #a75ce8; /* Borde lila más grueso */
+            background-color: rgba(255, 255, 255, 0.1);
             margin-bottom: 10px;
-            box-shadow: 0 0 15px rgba(167, 92, 232, 1); /* Sombra lila intensa en la imagen */
-            transition: transform 0.3s ease;
-        }
-        .profile-image:hover {
-            transform: scale(1.05); /* Efecto al pasar el mouse */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5em;
+            color: #bbb;
+            overflow: hidden; /* Asegura que la imagen se quede dentro del círculo */
+            border: 2px solid #9370db; /* Borde lila para la foto */
+            box-shadow: 0 0 15px rgba(147, 112, 219, 0.5); /* Sombra alrededor de la foto */
         }
 
-        .welcome-header h1 {
-            font-size: 2.5em;
-            color: #fff;
-            margin-top: 5px;
-            margin-bottom: 10px;
-            text-shadow: 0 0 10px #a75ce8; /* Sombra de texto lila */
-            animation: textGlow 2s infinite alternate; /* Efecto de brillo en el texto */
+        .profile-pic {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Para que la imagen cubra el círculo sin deformarse */
+            border-radius: 50%;
         }
 
-        @keyframes textGlow {
-            0% { text-shadow: 0 0 5px #a75ce8; }
-            100% { text-shadow: 0 0 20px #a75ce8, 0 0 30px #a75ce8; }
+        .channel-name {
+            font-size: 1.2em;
+            color: #f0f0f0;
+            font-weight: bold;
+            margin-top: 5px; /* Pequeño margen superior */
         }
 
         .welcome-message {
-            font-size: 1.3em;
-            color: #d1baff; /* Lila más claro */
-            font-style: italic;
-        }
-
-        .anonymous-name-section {
-            text-align: center;
-            margin-bottom: 25px;
-            color: #e0e0e0;
-            background-color: rgba(60, 60, 80, 0.5);
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px dashed #a75ce8; /* Borde punteado misterioso */
-            animation: revealName 1.5s ease-out forwards; /* Animación al revelar nombre */
-            opacity: 0; /* Inicialmente oculto */
-        }
-
-        @keyframes revealName {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-
-        .anonymous-name-section p {
             font-size: 1.1em;
-            font-weight: bold;
-            color: #d1baff;
+            margin-bottom: 20px;
+            color: #f0f0f0;
         }
 
-        .question-section {
-            background-color: rgba(40, 40, 55, 0.7);
-            padding: 20px;
+        /* --- CLASES CRÍTICAS PARA MOSTRAR/OCULTAR SECCIONES --- */
+        .hidden-section {
+            display: none; /* Ocultará las secciones que no están activas */
+            opacity: 0;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .active-section {
+            display: block; /* Mostrará la sección activa */
+            opacity: 1;
+            transition: opacity 0.5s ease-in;
+        }
+        /* -------------------------------------------------------- */
+
+        .anonymous-name-display {
+            background-color: rgba(60, 0, 80, 0.6);
             border-radius: 10px;
-            margin-bottom: 25px;
-            border-left: 6px solid #a75ce8; /* Barra lateral lila más prominente */
-            box-shadow: 0 0 15px rgba(167, 92, 232, 0.3);
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(147, 112, 219, 0.5);
         }
 
-        .question-section h2 {
-            color: #a75ce8;
+        .anonymous-name-display p {
+            margin: 0;
+            font-size: 0.9em;
+            color: #ccc;
+        }
+
+        #generated-username {
+            color: #ffd700; /* Dorado para el nombre */
+            font-size: 1.8em;
+            margin: 5px 0 0;
+            letter-spacing: 1px;
+            animation: pulseName 2s infinite alternate; /* Animación de pulsación */
+        }
+
+        @keyframes pulseName {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.03); }
+        }
+
+        /* Estilos para el cuadro de reglas */
+        .rules-box {
+            background-color: rgba(60, 0, 80, 0.8);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: left;
+            max-height: 180px; /* Ajustado para que el botón siempre sea visible */
+            overflow-y: auto; /* Permite scroll solo en el recuadro de reglas si son muchas */
+            border: 1px solid #9370db;
+            margin-bottom: 20px; /* Espacio antes del checkbox */
+        }
+
+        .rules-box h3 {
+            color: #ffd700; /* Dorado para el título de las reglas */
             margin-top: 0;
+            font-size: 1.3em;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .rules-box ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .rules-box li {
+            margin-bottom: 8px;
+            color: #f0f0f0;
+            line-height: 1.4;
+            display: flex;
+            align-items: flex-start;
+            font-size: 0.95em;
+        }
+
+        .rules-box li::before {
+            content: "✨"; /* Pequeño icono para cada regla */
+            margin-right: 8px;
+            color: #da70d6;
+        }
+
+        .agree-to-rules {
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.95em;
+            color: #f0f0f0;
+            margin-bottom: 20px; /* Espacio antes del botón */
+        }
+
+        .agree-to-rules input[type="checkbox"] {
+            margin-right: 8px;
+            width: 18px;
+            height: 18px;
+            accent-color: #9370db; /* Color del checkbox */
+            cursor: pointer;
+        }
+
+        /* Estilos para el botón Continuar y Enviar */
+        #continue-button, #send-message-button {
+            background-color: #9370db; /* Lila medio */
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 10px rgba(147, 112, 219, 0.3);
+            display: block; /* Asegura que el botón ocupe su propia línea */
+            margin: 0 auto; /* Centra el botón horizontalmente */
+            margin-top: 0; /* Anula cualquier margen superior no deseado */
+        }
+
+        #continue-button:hover:not(:disabled), #send-message-button:hover {
+            background-color: #a060d0; /* Lila más claro al pasar el ratón */
+            transform: translateY(-3px); /* Pequeño efecto al pasar el mouse */
+            box-shadow: 0 6px 15px rgba(147, 112, 219, 0.5);
+        }
+
+        #continue-button:disabled {
+            background-color: #555;
+            cursor: not-allowed;
+            opacity: 0.7;
+            box-shadow: none;
+            transform: translateY(0);
+        }
+
+        /* Estilos para la pantalla de espera */
+        .waiting-message {
+            font-size: 1.8em;
+            color: #e0b0ff;
+            animation: floatText 2s infinite alternate;
+        }
+
+        @keyframes floatText {
+            0% { transform: translateY(0px); }
+            100% { transform: translateY(-10px); }
+        }
+
+        .loading-animation {
+            border: 6px solid #f3f3f3;
+            border-top: 6px solid #9370db; /* Color lila del spinner */
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 30px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Estilos para la sección del chat */
+        .chat-title {
+            color: #da70d6;
+            margin-bottom: 20px;
             font-size: 1.6em;
-            margin-bottom: 10px;
+            text-shadow: 0 0 8px rgba(218, 112, 214, 0.5);
         }
 
-        .question-section p {
-            font-size: 1.15em;
-            line-height: 1.6;
-            color: #e0e0e0;
-        }
-
-        .chat-section {
-            background-color: rgba(35, 35, 50, 0.8);
-            padding: 20px;
+        .chat-messages {
+            background-color: rgba(0, 0, 0, 0.4);
             border-radius: 10px;
-            height: 350px;
-            overflow-y: auto; /* Barra de scroll si hay muchos mensajes */
-            border: 1px solid rgba(167, 92, 232, 0.2);
+            padding: 15px;
+            max-height: 300px;
+            overflow-y: auto; /* Permite scroll si hay muchos mensajes */
+            margin-bottom: 15px;
+            text-align: left;
+            border: 1px solid rgba(147, 112, 219, 0.5); /* Borde lila */
+            box-shadow: inset 0 0 10px rgba(147, 112, 219, 0.2); /* Sombra interior sutil */
         }
 
-        /* Estilos de la barra de desplazamiento para que se vea bien en el tema oscuro */
-        .chat-section::-webkit-scrollbar {
+        .chat-messages::-webkit-scrollbar {
             width: 8px;
         }
-        .chat-section::-webkit-scrollbar-track {
-            background: #2a2a3a;
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
             border-radius: 10px;
         }
-        .chat-section::-webkit-scrollbar-thumb {
-            background: #6a3d9a; /* Lila oscuro */
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background-color: rgba(147, 112, 219, 0.7);
             border-radius: 10px;
-        }
-        .chat-section::-webkit-scrollbar-thumb:hover {
-            background: #a75ce8; /* Lila más claro al pasar el mouse */
+            border: 2px solid rgba(0, 0, 0, 0.2);
         }
 
-        #chat-messages {
-            display: flex;
-            flex-direction: column;
-            padding-bottom: 15px;
-        }
-
-        .message {
-            background-color: #4a3366; /* Burbuja de mensaje lila oscuro */
-            color: #fff;
-            padding: 12px 18px;
-            border-radius: 20px; /* Bordes más redondeados */
+        .chat-message {
             margin-bottom: 10px;
-            word-break: break-word;
-            max-width: 85%;
-            align-self: flex-start; /* Mensajes alineados a la izquierda por defecto */
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-            animation: messageFadeIn 0.5s ease-out; /* Animación de entrada de mensaje */
+            word-wrap: break-word;
+            animation: fadeInMessage 0.5s ease-out forwards; /* Animación para nuevos mensajes */
+            opacity: 0;
+            transform: translateY(10px);
         }
 
-        @keyframes messageFadeIn {
-            0% { opacity: 0; transform: translateY(10px); }
-            100% { opacity: 1; transform: translateY(0); }
+        @keyframes fadeInMessage {
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .input-area {
+        .message-username {
+            font-weight: bold;
+            color: #ffd700; /* Nombre de usuario en dorado */
+            margin-right: 5px;
+            text-shadow: 0 0 3px rgba(255, 215, 0, 0.5);
+        }
+
+        .message-content {
+            display: inline;
+            color: #f0f0f0;
+        }
+
+        .chat-input-area {
             display: flex;
-            margin-top: 20px;
             gap: 10px;
+            margin-top: 20px;
         }
 
         #message-input {
             flex-grow: 1;
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
-            background-color: #3a3a4a; /* Campo de entrada oscuro */
-            color: #e0e0e0;
+            padding: 10px 15px;
+            border: 1px solid #9370db;
+            border-radius: 25px;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: #f0f0f0;
             font-size: 1em;
             outline: none;
-            border: 1px solid #6a3d9a; /* Borde lila */
+            box-shadow: 0 0 8px rgba(147, 112, 219, 0.3);
             transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
-        #message-input::placeholder {
-            color: #b0b0b0;
-        }
-
         #message-input:focus {
-            border-color: #a75ce8;
-            box-shadow: 0 0 10px rgba(167, 92, 232, 0.6); /* Sombra al enfocar */
+            border-color: #da70d6;
+            box-shadow: 0 0 12px rgba(218, 112, 214, 0.5);
         }
 
-        #send-button {
-            background-color: #a75ce8; /* Botón lila vibrante */
-            color: #fff;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1.05em;
-            font-weight: bold;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+        #message-input::placeholder {
+            color: #ccc;
         }
 
-        #send-button:hover {
-            background-color: #8c45c9; /* Lila más oscuro al pasar el mouse */
-            transform: translateY(-2px); /* Efecto de "levantar" */
-        }
-
-        #send-button:active {
-            transform: translateY(0); /* Efecto al presionar */
+        #send-message-button {
+            padding: 10px 20px;
+            font-size: 1em;
+            margin-top: 0;
         }
     </style>
 </head>
 <body>
+
     <div class="container">
-        <header class="welcome-header">
-            <div class="profile-container">
-                <img src="URL_DE_TU_PERFIL_YOUTUBE" alt="Perfil Kayla_lan" class="profile-image">
-                <h1>Kayla_lan</h1>
+        <section id="welcome-section" class="active-section">
+            <h1 class="kanonimo-title">Kanonimo 🤫</h1>
+            
+            <div class="channel-info">
+                <div class="profile-pic-placeholder">
+                    <img src="https://via.placeholder.com/80/DA70D6/FFFFFF?text=KL" alt="Foto de perfil de Kayla_lan" class="profile-pic" onerror="this.style.display='none'; this.parentElement.textContent='KL';">
+                </div>
+                <p class="channel-name">Kayla_lan</p>
             </div>
-            <p class="welcome-message">¡Bienvenido/a al chat anónimo!</p>
-        </header>
+            
+            <p class="welcome-message">¡Bienvenido a tu espacio anónimo con Kayla!</p>
 
-        <div class="anonymous-name-section">
-            <p id="anonymous-name">Generando tu nombre anónimo...</p>
-        </div>
-
-        <div class="question-section">
-            <h2>Pregunta de Kayla:</h2>
-            <p id="current-question">Esperando la pregunta de Kayla...</p>
-        </div>
-
-        <div class="chat-section">
-            <div id="chat-messages">
-                <div class="message">¡Hola! Este es un espacio anónimo. ¡Sé respetuoso/a y diviértete!</div>
+            <div class="anonymous-name-display">
+                <p>Tu nombre de usuario aleatorio es:</p>
+                <h2 id="generated-username">Generando...</h2>
             </div>
-            <div class="input-area">
-                <input type="text" id="message-input" placeholder="Escribe tu respuesta anónima aquí...">
-                <button id="send-button">Enviar</button>
+
+            <div class="rules-box">
+                <h3>Reglas de Kanonimo</h3>
+                <ul>
+                    <li><strong>Respeta a los demás:</strong> Trata a todos con amabilidad.</li>
+                    <li><strong>No al bullying ni al acoso:</strong> Mantenemos un ambiente seguro para todos.</li>
+                    <li><strong>Lenguaje apropiado:</strong> Evita las malas palabras y el contenido ofensivo.</li>
+                    <li><strong>Confidencialidad del anonimato:</strong> No intentes revelar la identidad de otros.</li>
+                    <li><strong>Disfruta y participa:</strong> Comparte tus ideas de forma constructiva.</li>
+                </ul>
             </div>
-        </div>
+
+            <div class="agree-to-rules">
+                <input type="checkbox" id="accept-rules" name="accept-rules">
+                <label for="accept-rules">He leído y acepto las reglas</label>
+            </div>
+
+            <button id="continue-button" disabled>Continuar</button>
+        </section>
+
+        <section id="waiting-section" class="hidden-section">
+            <h2 class="waiting-message">Esperando la pregunta de Kayla...</h2>
+            <div class="loading-animation"></div> </section>
+
+        <section id="chat-section" class="hidden-section">
+            <h2 class="chat-title">Pregunta de Kayla: <span id="current-question">Cargando pregunta...</span></h2>
+            <div class="chat-messages" id="chat-messages">
+                </div>
+            <div class="chat-input-area">
+                <input type="text" id="message-input" placeholder="Escribe tu comentario aquí...">
+                <button id="send-message-button">Enviar</button>
+            </div>
+        </section>
     </div>
 
     <script>
-        // Lógica JavaScript
         document.addEventListener('DOMContentLoaded', () => {
-            const anonymousNameElement = document.getElementById('anonymous-name');
-            const questionElement = document.getElementById('current-question');
-            const chatMessagesElement = document.getElementById('chat-messages');
+            const welcomeSection = document.getElementById('welcome-section');
+            const waitingSection = document.getElementById('waiting-section');
+            const chatSection = document.getElementById('chat-section');
+            const generatedUsernameDisplay = document.getElementById('generated-username');
+            const acceptRulesCheckbox = document.getElementById('accept-rules');
+            const continueButton = document.getElementById('continue-button');
             const messageInput = document.getElementById('message-input');
-            const sendButton = document.getElementById('send-button');
+            const sendMessageButton = document.getElementById('send-message-button');
+            const chatMessages = document.getElementById('chat-messages');
+            const currentQuestionDisplay = document.getElementById('current-question');
 
-            // Array de nombres anónimos posibles
-            const anonymousNames = [
-                "Sombra Misteriosa", "Enigma Lila", "Voz Oculta", "Secreto Estelar",
-                "Eco Anónimo", "Mente Velada", "Susurro del Alma", "Observador Silente",
-                "Viajero Enigmático", "Navegante Invisible", "Alma Púrpura"
-            ];
+            // Depuración: Asegúrate de que todos los elementos HTML necesarios se encuentren.
+            // Si ves errores en la consola del navegador, esto te ayudará a identificarlos.
+            if (!welcomeSection || !acceptRulesCheckbox || !continueButton || !generatedUsernameDisplay) {
+                console.error('Error: No se encontraron todos los elementos HTML necesarios. Revisa tus IDs o la estructura del HTML.');
+                return; // Detiene la ejecución si falta algo crítico.
+            }
 
-            // Generar y mostrar un nombre anónimo aleatorio
-            const generateAnonymousName = () => {
-                const randomIndex = Math.floor(Math.random() * anonymousNames.length);
-                const chosenName = anonymousNames.splice(randomIndex, 1)[0] || "Anónimo #" + Math.floor(Math.random() * 1000); // En caso de que se acaben
-                anonymousNameElement.textContent = `Tu identidad anónima: ${chosenName}`;
-                // Agrega una clase para activar la animación después de que el texto se haya establecido
-                anonymousNameElement.parentElement.style.opacity = '1';
-                anonymousNameElement.parentElement.style.transform = 'translateY(0)';
-            };
+            let userName = ''; // Almacena el nombre de usuario generado.
 
-            // Simular la recepción de la pregunta (en una app real vendría del backend)
-            const displayQuestion = (question) => {
-                questionElement.textContent = question;
-            };
+            // --- 1. Generar nombre aleatorio al cargar la página ---
+            function generateRandomName() {
+                const adjectives = ['Misterioso', 'Silencioso', 'Sutil', 'Velado', 'Enigmático', 'Secreto', 'Oculto', 'Fantasma'];
+                const nouns = ['Sombra', 'Susurro', 'Eco', 'Velo', 'Aura', 'Reflejo', 'Fragmento', 'Espectro'];
+                const randomNumber = Math.floor(Math.random() * 900) + 100; // Número de 3 cifras (100-999)
+                const randomAdjective = adjectives[Math.floor(Math.random() * adjectives.length)];
+                const randomNoun = nouns[Math.floor(Math.random() * nouns.length)];
+                userName = `${randomAdjective} ${randomNoun} ${randomNumber}`;
+                generatedUsernameDisplay.textContent = userName;
+            }
+            generateRandomName(); // Llama a la función al cargar la página.
 
-            // Simular el envío de un mensaje (en una app real se enviaría al backend)
-            const sendMessage = () => {
-                const messageText = messageInput.value.trim();
-                if (messageText) {
-                    const messageDiv = document.createElement('div');
-                    messageDiv.classList.add('message');
-                    messageDiv.textContent = messageText;
-                    chatMessagesElement.appendChild(messageDiv);
-                    messageInput.value = '';
-                    chatMessagesElement.scrollTop = chatMessagesElement.scrollHeight; // Scroll al último mensaje
-                    // En una aplicación real, aquí se enviarían los datos (nombre anónimo y mensaje) al servidor
-                    // y el servidor se encargaría de guardarlos y distribuirlos a otros usuarios si fuera un chat en vivo.
+            // --- 2. Habilitar botón "Continuar" al aceptar reglas ---
+            acceptRulesCheckbox.addEventListener('change', () => {
+                continueButton.disabled = !acceptRulesCheckbox.checked;
+                console.log('Checkbox de reglas cambiado. Botón Continuar deshabilitado:', continueButton.disabled);
+            });
+
+            // --- 3. Manejar el flujo de las secciones al hacer clic en "Continuar" ---
+            continueButton.addEventListener('click', () => {
+                if (acceptRulesCheckbox.checked) {
+                    // Transición de salida para la sección de bienvenida.
+                    welcomeSection.style.opacity = '0';
+                    setTimeout(() => {
+                        welcomeSection.classList.remove('active-section');
+                        welcomeSection.classList.add('hidden-section');
+                        
+                        // Transición de entrada para la sección de espera.
+                        waitingSection.classList.remove('hidden-section');
+                        waitingSection.classList.add('active-section');
+                        waitingSection.style.opacity = '1';
+
+                        console.log('Botón Continuar presionado. Transicionando a la sección de espera.');
+
+                        // Simula la espera antes de mostrar el chat (aquí iría la conexión real al servidor).
+                        setTimeout(() => {
+                            // Transición de salida para la sección de espera.
+                            waitingSection.style.opacity = '0';
+                            setTimeout(() => {
+                                waitingSection.classList.remove('active-section');
+                                waitingSection.classList.add('hidden-section');
+                                
+                                // Transición de entrada para la sección del chat.
+                                chatSection.classList.remove('hidden-section');
+                                chatSection.classList.add('active-section');
+                                chatSection.style.opacity = '1';
+
+                                // Aquí se cargaría la primera pregunta de Kayla desde tu backend (ejemplo).
+                                currentQuestionDisplay.textContent = "¿Qué te gustaría preguntarle hoy a Kayla?";
+                                console.log('Mostrando la sección del chat.');
+                            }, 500); // Pequeño retraso para la transición de opacidad.
+                        }, 3000); // Espera 3 segundos antes de mostrar el chat.
+                    }, 500); // Retraso para la transición de opacidad de welcomeSection.
+                } else {
+                    alert('¡Oh no! Debes aceptar las reglas para continuar en Kanonimo.');
                 }
-            };
+            });
 
-            generateAnonymousName();
-            // Esta es la pregunta que se mostrará. Puedes cambiarla cuando tengas una nueva dinámica.
-            displayQuestion("¡Hoy quiero saber! ¿Cuál es el misterio más grande que has logrado resolver en tu vida?");
+            // --- 4. Enviar mensajes (simulación) ---
+            sendMessageButton.addEventListener('click', () => {
+                const message = messageInput.value.trim();
+                if (message) {
+                    const messageElement = document.createElement('div');
+                    messageElement.classList.add('chat-message');
+                    // Muestra el nombre aleatorio generado para el usuario.
+                    messageElement.innerHTML = `<span class="message-username">${userName}:</span><p class="message-content">${message}</p>`;
+                    chatMessages.appendChild(messageElement);
+                    chatMessages.scrollTop = chatMessages.scrollHeight; // Desplaza el scroll al final para ver el último mensaje.
+                    messageInput.value = ''; // Limpia el campo de entrada.
+                    console.log('Mensaje enviado (simulado):', message);
 
-            sendButton.addEventListener('click', sendMessage);
-            messageInput.addEventListener('keypress', (event) => {
-                if (event.key === 'Enter') {
-                    sendMessage();
+                    // RECORDATORIO: En un sitio real, este mensaje se enviaría a tu servidor
+                    // y el servidor lo reenviaría a todos los usuarios conectados (incluyéndote a ti).
+                }
+            });
+
+            // Opcional: Enviar mensaje al presionar Enter.
+            messageInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    sendMessageButton.click();
                 }
             });
         });
     </script>
+
 </body>
 </html>
