@@ -3,451 +3,369 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat Anónimo [Nombre Colaborativo]</title>
+    <title>Kanonimo - Tu espacio anónimo con Kayla</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+
     <style>
-        /* Estilos CSS (Idénticos a los anteriores para mantener tu diseño favorito) */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #1a1a2e;
-            color: #e0e0e0;
-            margin: 0;
-            padding: 0;
+            background-color: #2c003e; /* Lila oscuro de fondo */
+            color: #e0b0ff; /* Texto lila claro */
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            overflow: hidden;
-            position: relative;
+            margin: 0;
+            overflow: hidden; /* Oculta barras de scroll del body */
+            /* Efecto de partículas sutil para el fondo */
+            background-image: radial-gradient(circle at top left, rgba(147, 112, 219, 0.2) 0%, transparent 50%),
+                              radial-gradient(circle at bottom right, rgba(218, 112, 214, 0.2) 0%, transparent 50%);
+            background-size: 150% 150%;
+            animation: backgroundPan 30s linear infinite alternate;
         }
 
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, rgba(167, 92, 232, 0.1) 0%, rgba(26, 26, 46, 0.8) 70%);
-            animation: backgroundPulse 15s infinite alternate;
-            z-index: -1;
-        }
-
-        @keyframes backgroundPulse {
-            0% { transform: scale(1); opacity: 0.8; }
-            100% { transform: scale(1.1); opacity: 1; }
+        @keyframes backgroundPan {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
         }
 
         .container {
-            background-color: rgba(30, 30, 40, 0.95);
+            background-color: rgba(0, 0, 0, 0.7); /* Fondo semi-transparente para el contenido */
+            padding: 40px;
             border-radius: 15px;
-            box-shadow: 0 0 40px rgba(167, 92, 232, 0.7);
-            padding: 30px;
-            width: 90%;
-            max-width: 650px;
-            animation: fadeIn 1.5s ease-out;
-            border: 1px solid rgba(167, 92, 232, 0.4);
-            position: relative;
-            z-index: 1;
-            /* CAMBIO IMPORTANTE: Por defecto el contenedor del chat estará oculto */
-            display: none; 
-            flex-direction: column; /* Para organizar el contenido verticalmente */
-        }
-
-        /* NUEVO: Estilos para la sección inicial de bienvenida/reglas */
-        #welcome-screen {
-            background-color: rgba(30, 30, 40, 0.95);
-            border-radius: 15px;
-            box-shadow: 0 0 40px rgba(167, 92, 232, 0.7);
-            padding: 30px;
-            width: 90%;
-            max-width: 650px;
-            animation: fadeIn 1.5s ease-out;
-            border: 1px solid rgba(167, 92, 232, 0.4);
-            position: relative;
-            z-index: 1;
-            display: flex; /* CAMBIO IMPORTANTE: Visible por defecto */
-            flex-direction: column;
-            align-items: center;
+            box-shadow: 0 0 30px rgba(128, 0, 128, 0.5); /* Sombra lila para el contenedor */
             text-align: center;
-            height: fit-content; /* Ajusta la altura al contenido */
-            max-height: 90vh; /* Limita la altura para no desbordar */
-            overflow-y: auto; /* Permite scroll si el contenido es mucho */
+            width: 90%;
+            max-width: 650px; /* Aumentado para acomodar mejor los perfiles */
+            max-height: 95vh; /* Limita la altura del contenedor principal */
+            overflow-y: auto; /* Permite scroll en el contenedor si el contenido es muy largo */
+            position: relative;
+            z-index: 10;
+            opacity: 0; /* Inicialmente oculto para animación de entrada */
+            transform: translateY(20px);
+            animation: fadeInContent 1s forwards;
+            animation-delay: 0.5s;
+            display: flex; /* Añadido para controlar las secciones internas */
+            flex-direction: column; /* Apila las secciones */
         }
 
-        #welcome-screen h1 {
-            font-size: 2.5em;
-            color: #fff;
-            margin-bottom: 20px;
-            text-shadow: 0 0 10px #a75ce8;
+        @keyframes fadeInContent {
+            to { opacity: 1; transform: translateY(0); }
         }
-        #welcome-screen p {
-            font-size: 1.1em;
-            color: #d1baff;
-            margin-bottom: 25px;
-            line-height: 1.6;
-        }
-        #welcome-screen ul {
-            list-style: none;
-            padding: 0;
-            margin: 0 0 30px 0;
-            text-align: left;
-            width: 90%;
-            max-width: 450px;
-        }
-        #welcome-screen ul li {
-            background-color: rgba(60, 60, 80, 0.5);
+
+        .kanonimo-title {
+            color: #da70d6; /* Lila vibrante para el título */
+            font-size: 3em;
             margin-bottom: 10px;
-            padding: 12px 18px;
-            border-radius: 8px;
-            border-left: 4px solid #a75ce8;
-            font-size: 1em;
-            color: #e0e0e0;
-            display: flex;
-            align-items: center;
-        }
-        #welcome-screen ul li::before {
-            content: '✓'; /* Icono de check */
-            color: #4CAF50; /* Color verde */
-            font-weight: bold;
-            margin-right: 10px;
+            text-shadow: 0 0 10px rgba(218, 112, 214, 0.7); /* Sombra de texto lila */
         }
 
-        #start-chat-button {
-            background-color: #4CAF50; /* Verde para el botón de inicio */
-            color: #fff;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 1.3em;
-            font-weight: bold;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
-            margin-top: 20px; /* Separación del contenido */
-        }
-        #start-chat-button:hover {
-            background-color: #45a049;
-            transform: translateY(-3px);
-        }
-        #start-chat-button:active {
-            transform: translateY(0);
-        }
-
-
-        @keyframes fadeIn {
-            0% { opacity: 0; transform: translateY(-30px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-
-        .welcome-header {
-            text-align: center;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid rgba(167, 92, 232, 0.3);
-        }
-
-        .profile-container {
-            display: flex;
-            flex-direction: column; 
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        
-        /* Contenedor para las dos tarjetas de perfil */
         .profile-cards-wrapper {
-            display: flex; 
+            display: flex;
             justify-content: center;
-            gap: 25px; /* Más espacio entre las tarjetas */
-            margin-bottom: 15px;
-            flex-wrap: wrap; /* Para que se ajusten en pantallas pequeñas */
+            gap: 30px; /* Espacio entre las tarjetas de perfil */
+            margin-bottom: 25px; /* Espacio debajo de los perfiles */
+            flex-wrap: wrap; /* Permite que las tarjetas se envuelvan en pantallas pequeñas */
         }
 
         .profile-card {
             display: flex;
             flex-direction: column;
             align-items: center;
-            text-decoration: none; /* Eliminar subrayado de enlace */
-            color: inherit; /* Heredar color del padre */
+            text-decoration: none;
+            color: inherit;
             transition: transform 0.3s ease;
         }
 
         .profile-card:hover {
-            transform: translateY(-5px); /* Pequeño efecto al pasar el mouse */
+            transform: translateY(-5px);
         }
 
-        .profile-image {
-            width: 100px; /* Tamaño de la imagen de perfil */
-            height: 100px;
+        .profile-pic {
+            width: 90px; /* Tamaño ligeramente más grande */
+            height: 90px;
             border-radius: 50%;
-            border: 4px solid #a75ce8;
-            box-shadow: 0 0 15px rgba(167, 92, 232, 1);
-            margin-bottom: 8px; /* Espacio entre la imagen y el nombre */
-            object-fit: cover; /* Asegura que la imagen cubra el área sin distorsionarse */
-            flex-shrink: 0; /* Evita que la imagen se encoja */
+            border: 3px solid #9370db; /* Borde lila para la foto */
+            box-shadow: 0 0 15px rgba(147, 112, 219, 0.5); /* Sombra alrededor de la foto */
+            margin-bottom: 8px;
+            object-fit: cover;
+            flex-shrink: 0;
         }
-        
-        .profile-name {
-            font-size: 1.1em; /* Tamaño del nombre del canal */
+
+        .channel-name {
+            font-size: 1.1em;
+            color: #f0f0f0;
             font-weight: bold;
-            color: #d1baff; /* Color del texto del nombre */
             text-align: center;
-            max-width: 120px; /* Limita el ancho del nombre para que no se extienda demasiado */
-            word-wrap: break-word; /* Rompe palabras largas si es necesario */
-        }
-
-        .welcome-header h1 {
-            font-size: 2.5em;
-            color: #fff;
-            margin-top: 5px;
-            margin-bottom: 10px;
-            text-shadow: 0 0 10px #a75ce8;
-            animation: textGlow 2s infinite alternate;
-        }
-
-        @keyframes textGlow {
-            0% { text-shadow: 0 0 5px #a75ce8; }
-            100% { text-shadow: 0 0 20px #a75ce8, 0 0 30px #a75ce8; }
+            max-width: 120px; /* Limita el ancho del nombre */
+            word-wrap: break-word; /* Rompe palabras largas */
         }
 
         .welcome-message {
-            font-size: 1.3em;
-            color: #d1baff;
-            font-style: italic;
-        }
-
-        .anonymous-name-section {
-            text-align: center;
-            margin-bottom: 25px;
-            color: #e0e0e0;
-            background-color: rgba(60, 60, 80, 0.5);
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px dashed #a75ce8;
-            animation: revealName 1.5s ease-out forwards;
-            opacity: 0;
-            /* CAMBIO IMPORTANTE: Solo se mostrará cuando se active el chat */
-            display: none; 
-        }
-
-        @keyframes revealName {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-
-        .anonymous-name-section p {
             font-size: 1.1em;
-            font-weight: bold;
-            color: #d1baff;
+            margin-bottom: 20px;
+            color: #f0f0f0;
         }
 
-        .question-section {
-            background-color: rgba(40, 40, 55, 0.7);
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 25px;
-            border-left: 6px solid #a75ce8;
-            box-shadow: 0 0 15px rgba(167, 92, 232, 0.3);
-            /* CAMBIO IMPORTANTE: Solo se mostrará cuando se active el chat */
-            display: none; 
+        /* --- CLASES CRÍTICAS PARA MOSTRAR/OCULTAR SECCIONES --- */
+        .hidden-section {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease-out;
+            width: 100%; /* Asegura que la sección tome el ancho completo */
         }
 
-        .question-section h2 {
-            color: #a75ce8;
-            margin-top: 0;
-            font-size: 1.6em;
-            margin-bottom: 10px;
-        }
-
-        .question-section p {
-            font-size: 1.15em;
-            line-height: 1.6;
-            color: #e0e0e0;
-        }
-
-        .chat-section {
-            background-color: rgba(35, 35, 50, 0.8);
-            padding: 20px;
-            border-radius: 10px;
-            height: 350px;
-            overflow-y: auto;
-            border: 1px solid rgba(167, 92, 232, 0.2);
-            /* Añadido margen inferior para separar del botón de envío */
-            margin-bottom: 20px; 
-            /* CAMBIO IMPORTANTE: Solo se mostrará cuando se active el chat */
-            display: none; 
-        }
-
-        .chat-section::-webkit-scrollbar {
-            width: 8px;
-        }
-        .chat-section::-webkit-scrollbar-track {
-            background: #2a2a3a;
-            border-radius: 10px;
-        }
-        .chat-section::-webkit-scrollbar-thumb {
-            background: #6a3d9a;
-            border-radius: 10px;
-        }
-        .chat-section::-webkit-scrollbar-thumb:hover {
-            background: #a75ce8;
-        }
-
-        #chat-messages {
-            display: flex;
+        .active-section {
+            display: flex; /* Usamos flex para las secciones activas para mejor control de contenido */
             flex-direction: column;
-            padding-bottom: 15px;
+            opacity: 1;
+            transition: opacity 0.5s ease-in;
+            width: 100%;
+            height: 100%; /* Las secciones activas llenan el contenedor */
+        }
+        /* -------------------------------------------------------- */
+
+        .anonymous-name-display {
+            background-color: rgba(60, 0, 80, 0.6);
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(147, 112, 219, 0.5);
         }
 
-        .message {
-            background-color: #4a3366;
-            color: #fff;
-            padding: 12px 18px;
-            border-radius: 20px;
-            margin-bottom: 10px;
-            word-break: break-word;
-            max-width: 85%;
-            align-self: flex-start;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-            animation: messageFadeIn 0.5s ease-out;
-            position: relative; /* Para el botón de eliminar */
+        .anonymous-name-display p {
+            margin: 0;
+            font-size: 0.9em;
+            color: #ccc;
         }
 
-        @keyframes messageFadeIn {
-            0% { opacity: 0; transform: translateY(10px); }
-            100% { opacity: 1; transform: translateY(0); }
+        #generated-username {
+            color: #ffd700; /* Dorado para el nombre */
+            font-size: 1.8em;
+            margin: 5px 0 0;
+            letter-spacing: 1px;
+            animation: pulseName 2s infinite alternate; /* Animación de pulsación */
         }
 
-        /* Estilos del botón de eliminar (solo para admin) */
-        .delete-btn {
-            background-color: #e74c3c;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 25px;
-            height: 25px;
-            font-size: 0.8em;
-            font-weight: bold;
-            cursor: pointer;
-            position: absolute;
-            top: -8px; /* Ajusta la posición */
-            right: -8px; /* Ajusta la posición */
-            display: none; /* Oculto por defecto */
+        @keyframes pulseName {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.03); }
+        }
+
+        /* Estilos para el cuadro de reglas */
+        .rules-box {
+            background-color: rgba(60, 0, 80, 0.8);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: left;
+            max-height: 180px;
+            overflow-y: auto;
+            border: 1px solid #9370db;
+            margin-bottom: 20px;
+        }
+
+        .rules-box h3 {
+            color: #ffd700;
+            margin-top: 0;
+            font-size: 1.3em;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .rules-box ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .rules-box li {
+            margin-bottom: 8px;
+            color: #f0f0f0;
+            line-height: 1.4;
+            display: flex;
+            align-items: flex-start;
+            font-size: 0.95em;
+        }
+
+        .rules-box li::before {
+            content: "✨";
+            margin-right: 8px;
+            color: #da70d6;
+        }
+
+        .agree-to-rules {
+            margin-top: 15px;
+            display: flex;
             align-items: center;
             justify-content: center;
-            transition: background-color 0.2s ease;
-        }
-        .delete-btn:hover {
-            background-color: #c0392b;
-        }
-        /* Mostrar el botón de eliminar cuando es admin */
-        body.admin-mode .delete-btn {
-            display: flex;
+            font-size: 0.95em;
+            color: #f0f0f0;
+            margin-bottom: 20px;
         }
 
-        .input-area {
+        .agree-to-rules input[type="checkbox"] {
+            margin-right: 8px;
+            width: 18px;
+            height: 18px;
+            accent-color: #9370db;
+            cursor: pointer;
+        }
+
+        /* Estilos para el botón Continuar y Enviar */
+        #continue-button, #send-message-button {
+            background-color: #9370db;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 10px rgba(147, 112, 219, 0.3);
+            display: block;
+            margin: 0 auto;
+            margin-top: 0;
+        }
+
+        #continue-button:hover:not(:disabled), #send-message-button:hover {
+            background-color: #a060d0;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(147, 112, 219, 0.5);
+        }
+
+        #continue-button:disabled {
+            background-color: #555;
+            cursor: not-allowed;
+            opacity: 0.7;
+            box-shadow: none;
+            transform: translateY(0);
+        }
+
+        /* Estilos para la pantalla de espera */
+        .waiting-message {
+            font-size: 1.8em;
+            color: #e0b0ff;
+            animation: floatText 2s infinite alternate;
+            margin-bottom: 20px;
+        }
+
+        @keyframes floatText {
+            0% { transform: translateY(0px); }
+            100% { transform: translateY(-10px); }
+        }
+
+        .loading-animation {
+            border: 6px solid rgba(243, 243, 243, 0.2); /* Borde sutil */
+            border-top: 6px solid #9370db;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 30px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Estilos para la sección del chat */
+        .chat-title {
+            color: #da70d6;
+            margin-bottom: 20px;
+            font-size: 1.6em;
+            text-shadow: 0 0 8px rgba(218, 112, 214, 0.5);
+        }
+
+        .chat-messages {
+            background-color: rgba(0, 0, 0, 0.4);
+            border-radius: 10px;
+            padding: 15px;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+            text-align: left;
+            border: 1px solid rgba(147, 112, 219, 0.5);
+            box-shadow: inset 0 0 10px rgba(147, 112, 219, 0.2);
+        }
+
+        .chat-messages::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background-color: rgba(147, 112, 219, 0.7);
+            border-radius: 10px;
+            border: 2px solid rgba(0, 0, 0, 0.2);
+        }
+
+        .chat-message {
+            margin-bottom: 10px;
+            word-wrap: break-word;
+            animation: fadeInMessage 0.5s ease-out forwards;
+            opacity: 0;
+            transform: translateY(10px);
+            position: relative; /* Necesario para posicionar el botón de borrar */
+            padding-right: 30px; /* Espacio para el botón de borrar */
+        }
+
+        @keyframes fadeInMessage {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message-username {
+            font-weight: bold;
+            color: #ffd700;
+            margin-right: 5px;
+            text-shadow: 0 0 3px rgba(255, 215, 0, 0.5);
+        }
+
+        .message-content {
+            display: inline;
+            color: #f0f0f0;
+        }
+
+        .chat-input-area {
             display: flex;
-            margin-top: 0; /* Eliminado el margen superior para que el margen inferior del chat-section lo controle */
             gap: 10px;
+            margin-top: 20px;
         }
 
         #message-input {
             flex-grow: 1;
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
-            background-color: #3a3a4a;
-            color: #e0e0e0;
+            padding: 10px 15px;
+            border: 1px solid #9370db;
+            border-radius: 25px;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: #f0f0f0;
             font-size: 1em;
             outline: none;
-            border: 1px solid #6a3d9a;
+            box-shadow: 0 0 8px rgba(147, 112, 219, 0.3);
             transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
-        #message-input::placeholder {
-            color: #b0b0b0;
-        }
-
         #message-input:focus {
-            border-color: #a75ce8;
-            box-shadow: 0 0 10px rgba(167, 92, 232, 0.6);
+            border-color: #da70d6;
+            box-shadow: 0 0 12px rgba(218, 112, 214, 0.5);
         }
 
-        #send-button {
-            background-color: #a75ce8;
-            color: #fff;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1.05em;
-            font-weight: bold;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+        #message-input::placeholder {
+            color: #ccc;
         }
 
-        #send-button:hover {
-            background-color: #8c45c9;
-            transform: translateY(-2px);
-        }
-
-        #send-button:active {
-            transform: translateY(0);
-        }
-
-        /* --- Estilos del Panel de Administración (solo para ti) --- */
-        .admin-controls {
-            background-color: rgba(50, 50, 70, 0.8);
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 25px;
-            border: 1px dashed #7a46ad;
-            display: none; /* Oculto por defecto para no-admin */
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .admin-controls h3 {
-            color: #a75ce8;
+        #send-message-button {
+            padding: 10px 20px;
+            font-size: 1em;
             margin-top: 0;
-            border-bottom: 1px solid rgba(167, 92, 232, 0.3);
-            padding-bottom: 10px;
         }
 
-        .admin-controls label {
-            font-weight: bold;
-            color: #d1baff;
-        }
-
-        .admin-controls input[type="text"] {
-            width: calc(100% - 22px);
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #6a3d9a;
-            background-color: #3a3a4a;
-            color: #e0e0e0;
-            margin-top: 5px;
-        }
-
-        .admin-controls button {
-            background-color: #a75ce8;
-            color: #fff;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
-        }
-        .admin-controls button:hover {
-            background-color: #8c45c9;
-        }
-
-        /* Mostrar panel de admin cuando el modo admin está activo */
-        body.admin-mode .admin-controls {
-            display: flex;
-        }
-
-        /* Botón de login/logout */
+        /* Admin Controls */
         #auth-button {
             background-color: #555;
             color: white;
@@ -465,304 +383,346 @@
         #auth-button:hover {
             background-color: #777;
         }
+
+        .admin-controls {
+            background-color: rgba(60, 0, 80, 0.6);
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin-top: 20px;
+            border: 1px dashed #9370db;
+            display: none; /* Oculto por defecto */
+            flex-direction: column;
+            gap: 10px;
+        }
+        body.admin-mode .admin-controls {
+            display: flex; /* Visible en modo admin */
+        }
+        .admin-controls label {
+            color: #ffd700;
+            font-weight: bold;
+        }
+        .admin-controls input[type="text"] {
+            width: calc(100% - 22px);
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #9370db;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: #f0f0f0;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+        .admin-controls button {
+            background-color: #da70d6;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        .admin-controls button:hover {
+            background-color: #b850b5;
+        }
+
+        .delete-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            font-size: 0.8em;
+            font-weight: bold;
+            cursor: pointer;
+            position: absolute;
+            top: 0px; /* Ajuste para que quede en la esquina del mensaje */
+            right: 0px;
+            display: none; /* Oculto por defecto */
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s ease;
+        }
+        .delete-btn:hover {
+            background-color: #c0392b;
+        }
+        body.admin-mode .delete-btn {
+            display: flex; /* Visible en modo admin */
+        }
     </style>
 </head>
 <body>
+
     <button id="auth-button">Iniciar Sesión (Admin)</button>
 
-    <div id="welcome-screen">
-        <header class="welcome-header">
-            <div class="profile-container">
-                <div class="profile-cards-wrapper">
-                    <a href="URL_CANAL_YOUTUBE_TUYO" target="_blank" class="profile-card">
-                        <img src="https://via.placeholder.com/100/FF00FF/FFFFFF?text=Tu+Perfil" alt="Tu Perfil" class="profile-image"> 
-                        <span class="profile-name">NOMBRE_TU_CANAL</span>
-                    </a>
-                    <a href="URL_CANAL_YOUTUBE_COLABORADOR" target="_blank" class="profile-card">
-                        <img src="https://via.placeholder.com/100/800080/FFFFFF?text=Colaborador" alt="Perfil Colaborador" class="profile-image">
-                        <span class="profile-name">NOMBRE_CANAL_COLABORADOR</span>
-                    </a>
+    <div class="container">
+        <section id="welcome-section" class="active-section">
+            <h1 class="kanonimo-title">Kanonimo 🤫</h1>
+
+            <div class="profile-cards-wrapper">
+                <a href="https://www.youtube.com/@Kayla_lan" target="_blank" class="profile-card">
+                    <img src="https://via.placeholder.com/90/DA70D6/FFFFFF?text=KL" alt="Foto de perfil de Kayla" class="profile-pic">
+                    <span class="channel-name">Kayla_lan</span>
+                </a>
+                <a href="https://www.youtube.com/@OtroCanalDeEjemplo" target="_blank" class="profile-card">
+                    <img src="https://via.placeholder.com/90/DA70D6/FFFFFF?text=CL" alt="Foto de perfil de Colaborador" class="profile-pic">
+                    <span class="channel-name">Colaborador</span>
+                </a>
+            </div>
+
+            <p class="welcome-message">¡Bienvenido a tu espacio anónimo con Kayla!</p>
+
+            <div class="anonymous-name-display">
+                <p>Tu nombre de usuario aleatorio es:</p>
+                <h2 id="generated-username">Generando...</h2>
+            </div>
+
+            <div class="rules-box">
+                <h3>Reglas de Kanonimo</h3>
+                <ul>
+                    <li><strong>Respeta a los demás:</strong> Trata a todos con amabilidad.</li>
+                    <li><strong>No al bullying ni al acoso:</strong> Mantenemos un ambiente seguro para todos.</li>
+                    <li><strong>Lenguaje apropiado:</strong> Evita las malas palabras y el contenido ofensivo.</li>
+                    <li><strong>Confidencialidad del anonimato:</strong> No intentes revelar la identidad de otros.</li>
+                    <li><strong>Disfruta y participa:</strong> Comparte tus ideas de forma constructiva.</li>
+                </ul>
+            </div>
+
+            <div class="agree-to-rules">
+                <input type="checkbox" id="accept-rules" name="accept-rules">
+                <label for="accept-rules">He leído y acepto las reglas</label>
+            </div>
+
+            <button id="continue-button" disabled>Continuar</button>
+        </section>
+
+        <section id="waiting-section" class="hidden-section">
+            <h2 class="waiting-message">Esperando la pregunta de Kayla...</h2>
+            <div class="loading-animation"></div>
+        </section>
+
+        <section id="chat-section" class="hidden-section">
+            <h2 class="chat-title">Pregunta de Kayla: <span id="current-question">Cargando pregunta...</span></h2>
+            <div class="chat-messages" id="chat-messages">
+                <div class="chat-message">
+                    <span class="message-username">Kanonimo Bot:</span>
+                    <p class="message-content">¡Hola! Este es un espacio anónimo. ¡Sé respetuoso/a y diviértete!</p>
                 </div>
-                <h1 id="collaborative-title-welcome">Nombre Colaborativo</h1> 
             </div>
-            <p class="welcome-message">¡Bienvenido/a a la dinámica anónima!</p>
-            <p>Lee las siguientes reglas para participar:</p>
-        </header>
-        
-        <ul>
-            <li>Sé respetuoso/a con todos los participantes.</li>
-            <li>No compartas información personal identificable.</li>
-            <li>Mantén un lenguaje apropiado y positivo.</li>
-            <li>Diviértete y sé parte de la conversación.</li>
-        </ul>
+            <div class="chat-input-area">
+                <input type="text" id="message-input" placeholder="Escribe tu comentario aquí...">
+                <button id="send-message-button">Enviar</button>
+            </div>
 
-        <button id="start-chat-button">Continuar al Chat</button>
-    </div>
-
-    <div class="container" id="chat-main-content">
-        <header class="welcome-header">
-            <div class="profile-container">
-                <div class="profile-cards-wrapper">
-                    <a href="URL_CANAL_YOUTUBE_TUYO" target="_blank" class="profile-card">
-                        <img src="https://via.placeholder.com/100/FF00FF/FFFFFF?text=Tu+Perfil" alt="Tu Perfil" class="profile-image"> 
-                        <span class="profile-name">NOMBRE_TU_CANAL</span>
-                    </a>
-                    <a href="URL_CANAL_YOUTUBE_COLABORADOR" target="_blank" class="profile-card">
-                        <img src="https://via.placeholder.com/100/800080/FFFFFF?text=Colaborador" alt="Perfil Colaborador" class="profile-image">
-                        <span class="profile-name">NOMBRE_CANAL_COLABORADOR</span>
-                    </a>
+            <div class="admin-controls">
+                <h3>Control de Administrador</h3>
+                <div>
+                    <label for="admin-question-input">Editar Pregunta:</label>
+                    <input type="text" id="admin-question-input" placeholder="Escribe aquí la nueva pregunta...">
+                    <button id="update-question-btn">Actualizar Pregunta</button>
                 </div>
-                <h1 id="collaborative-title">Nombre Colaborativo</h1> 
+                <p>Los botones "X" para eliminar comentarios aparecerán junto a cada mensaje cuando inicies sesión como administrador.</p>
             </div>
-            <p class="welcome-message">¡Participa en el chat anónimo!</p>
-        </header>
-
-        <div class="anonymous-name-section">
-            <p id="anonymous-name">Generando tu nombre anónimo...</p>
-        </div>
-
-        <div class="question-section">
-            <h2 id="question-title-prefix">Pregunta de [Nombre Colaborativo]:</h2> 
-            <p id="current-question">Esperando la pregunta de [Nombre Colaborativo]...</p>
-        </div>
-
-        <div class="chat-section">
-            <div id="chat-messages">
-                <div class="message">¡Hola! Este es un espacio anónimo. ¡Sé respetuoso/a y diviértete!</div>
-            </div>
-            <div class="input-area">
-                <input type="text" id="message-input" placeholder="Escribe tu respuesta anónima aquí...">
-                <button id="send-button">Enviar</button>
-            </div>
-        </div>
-
-        <div class="admin-controls">
-            <h3>Control de Administrador</h3>
-            <div>
-                <label for="admin-question-input">Editar Pregunta:</label>
-                <input type="text" id="admin-question-input" placeholder="Escribe aquí la nueva pregunta...">
-                <button id="update-question-btn">Actualizar Pregunta</button>
-            </div>
-            <p>Los botones "X" para eliminar comentarios aparecerán junto a cada mensaje cuando inicies sesión como administrador.</p>
-        </div>
-
+        </section>
     </div>
 
     <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
     <script>
-        // ¡IMPORTANTE! Conecta a tu backend local. Asegúrate de que el puerto (3000) sea el mismo que el de tu backend.
-        const socket = io('https://michat-backend.onrender.com'); // ¡IMPORTANTE! Reemplazar con la URL que te dé Render.com; 
+        // ¡IMPORTANTE! Asegúrate de que esta URL sea la de tu backend de Render.com
+        const socket = io('https://michat-backend.onrender.com');
 
-        // --- Variables globales y elementos del DOM ---
-        let currentAnonymousName = '';
-        const anonymousNames = [
-            "Sombra Misteriosa", "Enigma Lila", "Voz Oculta", "Secreto Estelar",
-            "Eco Anónimo", "Mente Velada", "Susurro del Alma", "Observador Silente",
-            "Viajero Enigmático", "Navegante Invisible", "Alma Púrpura", "Luz Encapuchada",
-            "Gema Anónima", "Espectro Amistoso", "Susurro Violeta", "Código Desconocido"
-        ];
-
-        const welcomeScreen = document.getElementById('welcome-screen'); // NUEVO
-        const startChatButton = document.getElementById('start-chat-button'); // NUEVO
-        const chatMainContent = document.getElementById('chat-main-content'); // NUEVO
-        
-        const anonymousNameElement = document.getElementById('anonymous-name');
-        const questionElement = document.getElementById('current-question');
-        const chatMessagesElement = document.getElementById('chat-messages');
-        const messageInput = document.getElementById('message-input');
-        const sendButton = document.getElementById('send-button');
-        const authButton = document.getElementById('auth-button'); // Botón de "Iniciar Sesión (Admin)"
-        const adminControls = document.querySelector('.admin-controls'); // Panel de controles de admin
-        const adminQuestionInput = document.getElementById('admin-question-input'); // Input para la pregunta
-        const updateQuestionBtn = document.getElementById('update-question-btn'); // Botón para actualizar pregunta
-        
-        // Obtener el nombre del equipo colaborativo del H1 y actualizar los prefijos de la pregunta
-        const collaborativeTitleElement = document.getElementById('collaborative-title');
-        const questionTitlePrefixElement = document.getElementById('question-title-prefix');
-        // NUEVO: Obtener el título colaborativo de la pantalla de bienvenida también
-        const collaborativeTitleWelcomeElement = document.getElementById('collaborative-title-welcome');
-
-
-        // Función para actualizar los títulos de las preguntas
-        const updateQuestionTitles = () => {
-            // Usa el texto del título colaborativo en la pantalla de bienvenida para inicializar
-            const currentCollaborativeName = collaborativeTitleWelcomeElement.textContent; // CAMBIO
-            // Asegúrate de que ambos títulos estén sincronizados, aunque uno esté oculto
-            collaborativeTitleElement.textContent = currentCollaborativeName; 
-            questionTitlePrefixElement.textContent = `Pregunta de ${currentCollaborativeName}:`;
-            if (questionElement) {
-                questionElement.textContent = `Esperando la pregunta de ${currentCollaborativeName}...`;
-            }
-        };
-
-        // Llama a la función al cargar el script por primera vez
-        updateQuestionTitles();
-
-
-        // Función para Iniciar/Cerrar Sesión de Administrador
-        authButton.addEventListener('click', () => {
-            if (document.body.classList.contains('admin-mode')) {
-                // Si está en modo admin, significa que es para cerrar sesión
-                document.body.classList.remove('admin-mode');
-                authButton.textContent = 'Iniciar Sesión (Admin)';
-                alert('Sesión de administrador cerrada.');
-                socket.emit('request chat history'); 
-            } else {
-                // Si no está en modo admin, es para iniciar sesión
-                const password = prompt("Introduce la contraseña de administrador:");
-                if (password) {
-                    socket.emit('admin:authenticate', password); // Enviar la contraseña al backend
-                }
-            }
-        });
-
-        // --- Funciones de Utilidad ---
-
-        const generateAnonymousName = () => {
-            currentAnonymousName = localStorage.getItem('kayla_anonymous_name');
-            if (!currentAnonymousName) {
-                const randomIndex = Math.floor(Math.random() * anonymousNames.length);
-                currentAnonymousName = anonymousNames[randomIndex];
-                localStorage.setItem('kayla_anonymous_name', currentAnonymousName);
-            }
-            anonymousNameElement.textContent = `Tu identidad anónima: ${currentAnonymousName}`;
-            // Esto se manejará al mostrar el chatMainContent
-            // anonymousNameElement.parentElement.style.opacity = '1';
-            // anonymousNameElement.parentElement.style.transform = 'translateY(0)';
-        };
-
-        // Función para mostrar un mensaje en el chat
-        const displayMessage = (messageData) => {
-            const messageDiv = document.createElement('div');
-            messageDiv.classList.add('message');
-            messageDiv.setAttribute('data-timestamp', messageData.timestamp); 
-
-            messageDiv.innerHTML = `<strong>${messageData.username}:</strong> ${messageData.content}`;
-
-            // Solo si el usuario actual es admin, muestra el botón de eliminar
-            if (document.body.classList.contains('admin-mode')) {
-                const deleteBtn = document.createElement('button');
-                deleteBtn.classList.add('delete-btn');
-                deleteBtn.textContent = 'X';
-                deleteBtn.onclick = () => {
-                    if (confirm('¿Estás seguro de que quieres eliminar este comentario?')) {
-                        socket.emit('admin:delete message', messageData.timestamp);
-                    }
-                };
-                messageDiv.appendChild(deleteBtn);
-            }
-
-            chatMessagesElement.appendChild(messageDiv);
-            chatMessagesElement.scrollTop = chatMessagesElement.scrollHeight;
-        };
-
-        // --- Lógica del Administrador ---
-
-        // Manejo de la actualización de la pregunta
-        updateQuestionBtn.addEventListener('click', () => {
-            const newQuestionText = adminQuestionInput.value.trim();
-            if (newQuestionText) {
-                socket.emit('admin:set question', newQuestionText);
-            } else {
-                alert("Por favor, escribe una pregunta.");
-            }
-        });
-
-        // --- Lógica del Chat ---
-
-        // Envío de mensajes
-        const sendMessage = () => {
-            const messageText = messageInput.value.trim();
-            if (messageText && currentAnonymousName) {
-                socket.emit('chat message', {
-                    username: currentAnonymousName,
-                    content: messageText
-                });
-                messageInput.value = ''; // Limpia el input después de enviar
-            } else if (!messageText) {
-                alert("Por favor, escribe un mensaje antes de enviar.");
-            } else if (!currentAnonymousName) {
-                alert("Tu nombre anónimo no se ha generado. Recarga la página.");
-            }
-        };
-
-        // --- Event Listeners de Socket.IO (lo que recibe del backend) ---
-
-        // Este evento se dispara cuando te conectas y recibes el historial de mensajes
-        socket.on('chat history', (history) => {
-            chatMessagesElement.innerHTML = ''; // Limpia el chat al recibir el historial completo
-            history.forEach(msg => displayMessage(msg)); // Vuelve a dibujar todos los mensajes
-        });
-
-        // Este evento se dispara cuando llega un nuevo mensaje
-        socket.on('chat message', (msg) => {
-            displayMessage(msg);
-        });
-
-        // Este evento se dispara cuando la pregunta es actualizada (por el admin o al cargar)
-        socket.on('question update', (question) => {
-            questionElement.textContent = question;
-            // Si eres un admin, también actualiza el input de la pregunta en el panel de admin
-            if (document.body.classList.contains('admin-mode')) {
-                adminQuestionInput.value = question;
-            }
-        });
-
-        // Este evento se dispara cuando el admin se autentica correctamente
-        socket.on('admin:authenticated', () => {
-            document.body.classList.add('admin-mode'); // Activa el modo admin visualmente
-            authButton.textContent = 'Cerrar Sesión (Admin)';
-            alert('Autenticación de administrador exitosa.');
-            socket.emit('request chat history'); 
-            socket.emit('request question update'); 
-        });
-
-        // Este evento se dispara cuando un mensaje es eliminado por el admin
-        socket.on('message deleted', (timestampToDelete) => {
-            const messageToDelete = chatMessagesElement.querySelector(`[data-timestamp="${timestampToDelete}"]`);
-            if (messageToDelete) {
-                messageToDelete.remove();
-            }
-        });
-
-        // Este evento se dispara cuando el chat es borrado por el admin
-        socket.on('chat cleared', () => {
-            chatMessagesElement.innerHTML = ''; // Vacía el contenedor de mensajes
-            const initialMessageDiv = document.createElement('div');
-            initialMessageDiv.classList.add('message');
-            initialMessageDiv.textContent = '¡Hola! Este es un espacio anónimo. ¡Sé respetuoso/a y diviértete!';
-            chatMessagesElement.appendChild(initialMessageDiv);
-        });
-
-
-        // --- Inicialización al cargar la página ---
         document.addEventListener('DOMContentLoaded', () => {
-            // CAMBIO: La generación del nombre anónimo y la solicitud de historial se mueven al hacer clic en 'Continuar'
-            // generateAnonymousName(); 
-            // socket.emit('request chat history'); 
-            // socket.emit('request question update'); // Solicita la pregunta actual al iniciar
+            const welcomeSection = document.getElementById('welcome-section');
+            const waitingSection = document.getElementById('waiting-section');
+            const chatSection = document.getElementById('chat-section');
+            const generatedUsernameDisplay = document.getElementById('generated-username');
+            const acceptRulesCheckbox = document.getElementById('accept-rules');
+            const continueButton = document.getElementById('continue-button');
+            const messageInput = document.getElementById('message-input');
+            const sendMessageButton = document.getElementById('send-message-button');
+            const chatMessagesElement = document.getElementById('chat-messages'); // Renombrado para evitar conflicto
+            const currentQuestionDisplay = document.getElementById('current-question');
+            const authButton = document.getElementById('auth-button');
+            const adminQuestionInput = document.getElementById('admin-question-input');
+            const updateQuestionBtn = document.getElementById('update-question-btn');
+            const adminControls = document.querySelector('.admin-controls'); // Referencia al div de controles admin
 
-            sendButton.addEventListener('click', sendMessage);
-            messageInput.addEventListener('keypress', (event) => {
-                if (event.key === 'Enter') {
-                    sendMessage();
+            let userName = ''; // Almacena el nombre de usuario generado.
+
+            // --- Funciones de manejo de UI ---
+            function showSection(sectionToShow) {
+                // Oculta todas las secciones
+                [welcomeSection, waitingSection, chatSection].forEach(section => {
+                    section.classList.remove('active-section');
+                    section.classList.add('hidden-section');
+                    section.style.opacity = '0'; // Para la transición suave
+                });
+
+                // Muestra la sección deseada
+                sectionToShow.classList.remove('hidden-section');
+                sectionToShow.classList.add('active-section');
+                // Un pequeño retraso para permitir que 'display' cambie antes de animar opacidad
+                setTimeout(() => {
+                    sectionToShow.style.opacity = '1';
+                }, 50);
+            }
+
+            // --- Generar nombre aleatorio al cargar la página ---
+            function generateRandomName() {
+                const adjectives = ['Misterioso', 'Silencioso', 'Sutil', 'Velado', 'Enigmático', 'Secreto', 'Oculto', 'Fantasma'];
+                const nouns = ['Sombra', 'Susurro', 'Eco', 'Velo', 'Aura', 'Reflejo', 'Fragmento', 'Espectro'];
+                const randomNumber = Math.floor(Math.random() * 900) + 100; // Número de 3 cifras (100-999)
+                const randomAdjective = adjectives[Math.floor(Math.random() * adjectives.length)];
+                const randomNoun = nouns[Math.floor(Math.random() * nouns.length)];
+                userName = `${randomAdjective} ${randomNoun} ${randomNumber}`;
+                generatedUsernameDisplay.textContent = userName;
+            }
+            generateRandomName(); // Llama a la función al cargar la página.
+
+            // --- Habilitar botón "Continuar" al aceptar reglas ---
+            acceptRulesCheckbox.addEventListener('change', () => {
+                continueButton.disabled = !acceptRulesCheckbox.checked;
+            });
+
+            // --- Manejar el flujo de las secciones al hacer clic en "Continuar" ---
+            continueButton.addEventListener('click', () => {
+                if (acceptRulesCheckbox.checked) {
+                    showSection(waitingSection); // Mostrar la sección de espera
+                    console.log('Botón Continuar presionado. Transicionando a la sección de espera.');
+
+                    // Simula la espera antes de mostrar el chat (aquí iría la conexión real al servidor).
+                    setTimeout(() => {
+                        showSection(chatSection); // Mostrar la sección del chat
+                        console.log('Mostrando la sección del chat.');
+
+                        // Solicitar historial de chat y pregunta actual al servidor
+                        socket.emit('request chat history');
+                        socket.emit('request question update');
+                    }, 3000); // Espera 3 segundos antes de mostrar el chat.
+                } else {
+                    alert('¡Oh no! Debes aceptar las reglas para continuar en Kanonimo.');
                 }
             });
 
-            // NUEVO: Manejador del botón "Continuar al Chat"
-            startChatButton.addEventListener('click', () => {
-                welcomeScreen.style.display = 'none'; // Oculta la pantalla de bienvenida
-                chatMainContent.style.display = 'flex'; // Muestra el contenido principal del chat
-                
-                // Ahora sí, genera el nombre anónimo y solicita los datos del chat
-                generateAnonymousName(); 
-                socket.emit('request chat history'); 
-                socket.emit('request question update'); 
+            // --- Funcionalidad de Admin ---
+            authButton.addEventListener('click', () => {
+                if (document.body.classList.contains('admin-mode')) {
+                    document.body.classList.remove('admin-mode');
+                    authButton.textContent = 'Iniciar Sesión (Admin)';
+                    alert('Sesión de administrador cerrada.');
+                    // Quitar los botones de borrar al cerrar sesión de admin
+                    document.querySelectorAll('.delete-btn').forEach(btn => btn.remove());
+                    // Vuelve a cargar el historial para que los botones desaparezcan
+                    socket.emit('request chat history');
+                } else {
+                    const password = prompt("Introduce la contraseña de administrador:");
+                    // Contraseña de admin: FatKay2059
+                    if (password === "FatKay2059") {
+                        document.body.classList.add('admin-mode');
+                        authButton.textContent = 'Cerrar Sesión (Admin)';
+                        alert('Autenticación de administrador exitosa.');
+                        // Al autenticarse como admin, solicitar historial para ver botones de borrar
+                        socket.emit('request chat history');
+                        socket.emit('request question update');
+                    } else if (password) {
+                        alert('Contraseña incorrecta.');
+                    }
+                }
+            });
 
-                // Muestra las secciones que estaban ocultas por defecto en el chat-main-content
-                document.querySelector('.anonymous-name-section').style.display = 'block';
-                document.querySelector('.question-section').style.display = 'block';
-                document.querySelector('.chat-section').style.display = 'flex'; // Chat section es flex para input area
+            updateQuestionBtn.addEventListener('click', () => {
+                const newQuestionText = adminQuestionInput.value.trim();
+                if (newQuestionText) {
+                    socket.emit('admin:set question', newQuestionText);
+                } else {
+                    alert("Por favor, escribe una pregunta para actualizar.");
+                }
+            });
+
+            // --- Manejo de mensajes del chat ---
+            function displayMessage(messageData) {
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('chat-message');
+                messageDiv.setAttribute('data-timestamp', messageData.timestamp); // Usamos timestamp como ID
+
+                const usernameSpan = document.createElement('span');
+                usernameSpan.classList.add('message-username');
+                usernameSpan.textContent = `${messageData.username}:`;
+
+                const contentP = document.createElement('p');
+                contentP.classList.add('message-content');
+                contentP.textContent = messageData.content;
+
+                messageDiv.appendChild(usernameSpan);
+                messageDiv.appendChild(contentP);
+
+                // Añadir botón de eliminar si es modo administrador
+                if (document.body.classList.contains('admin-mode')) {
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.classList.add('delete-btn');
+                    deleteBtn.textContent = 'X';
+                    deleteBtn.onclick = () => {
+                        if (confirm('¿Estás seguro de que quieres eliminar este comentario?')) {
+                            socket.emit('admin:delete message', messageData.timestamp);
+                        }
+                    };
+                    messageDiv.appendChild(deleteBtn);
+                }
+
+                chatMessagesElement.appendChild(messageDiv);
+                chatMessagesElement.scrollTop = chatMessagesElement.scrollHeight; // Desplaza al último mensaje
+            }
+
+            sendMessageButton.addEventListener('click', () => {
+                const message = messageInput.value.trim();
+                if (message) {
+                    socket.emit('chat message', {
+                        username: userName, // Usa el nombre generado
+                        content: message
+                    });
+                    messageInput.value = ''; // Limpia el campo
+                } else {
+                    alert("¡Ups! No puedes enviar un mensaje vacío.");
+                }
+            });
+
+            messageInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    sendMessageButton.click();
+                }
+            });
+
+            // --- Eventos de Socket.IO ---
+            socket.on('chat history', (history) => {
+                chatMessagesElement.innerHTML = ''; // Limpia antes de cargar el historial
+                history.forEach(msg => displayMessage(msg));
+            });
+
+            socket.on('chat message', (msg) => {
+                displayMessage(msg);
+            });
+
+            socket.on('question update', (question) => {
+                currentQuestionDisplay.textContent = question;
+                // Si el admin está activo, también actualiza su input
+                if (document.body.classList.contains('admin-mode')) {
+                    adminQuestionInput.value = question;
+                }
+            });
+
+            socket.on('message deleted', (timestampToDelete) => {
+                const messageToDelete = chatMessagesElement.querySelector(`[data-timestamp="${timestampToDelete}"]`);
+                if (messageToDelete) {
+                    messageToDelete.remove();
+                }
+            });
+
+            socket.on('chat cleared', () => {
+                chatMessagesElement.innerHTML = '';
+                const initialMessageDiv = document.createElement('div');
+                initialMessageDiv.classList.add('chat-message');
+                initialMessageDiv.innerHTML = '<span class="message-username">Kanonimo Bot:</span><p class="message-content">¡Hola! Este es un espacio anónimo. ¡Sé respetuoso/a y diviértete!</p>';
+                chatMessagesElement.appendChild(initialMessageDiv);
             });
         });
     </script>
