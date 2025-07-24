@@ -159,8 +159,8 @@
             padding: 20px;
             margin-top: 20px;
             text-align: left;
-            max-height: 180px;
-            overflow-y: auto;
+            max-height: 180px; /* Mantener un max-height para desktop */
+            overflow-y: auto; /* Permitir scroll dentro de las reglas si es necesario */
             border: 1px solid #9370db;
             margin-bottom: 20px;
         }
@@ -448,6 +448,122 @@
         }
         body.admin-mode .delete-btn {
             display: flex; /* Visible en modo admin */
+        }
+
+        /* --- Media Queries para móviles --- */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px; /* Menos padding en móviles */
+                max-width: 95%; /* Ocupa más ancho en móviles */
+                max-height: 98vh; /* Más altura disponible en móviles */
+            }
+
+            .kanonimo-title {
+                font-size: 2.2em; /* Título más pequeño */
+            }
+
+            .profile-cards-wrapper {
+                gap: 15px; /* Menos espacio entre perfiles */
+                margin-bottom: 20px;
+            }
+
+            .profile-pic {
+                width: 70px; /* Fotos de perfil más pequeñas */
+                height: 70px;
+                border-width: 2px;
+            }
+
+            .channel-name {
+                font-size: 0.9em; /* Nombre de canal más pequeño */
+                max-width: 100px;
+            }
+
+            .welcome-message {
+                font-size: 1em; /* Mensaje de bienvenida más pequeño */
+                margin-bottom: 15px;
+            }
+
+            .anonymous-name-display {
+                padding: 10px 15px; /* Padding reducido */
+                margin-bottom: 15px;
+            }
+
+            #generated-username {
+                font-size: 1.5em; /* Nombre de usuario más pequeño */
+            }
+
+            .rules-box {
+                padding: 15px; /* Padding reducido en reglas */
+                max-height: 150px; /* **Importante**: reduce la altura máxima en móviles */
+                margin-top: 15px;
+                margin-bottom: 15px;
+            }
+
+            .rules-box h3 {
+                font-size: 1.1em; /* Título de reglas más pequeño */
+                margin-bottom: 10px;
+            }
+
+            .rules-box li {
+                font-size: 0.85em; /* Texto de reglas más pequeño */
+                margin-bottom: 6px;
+            }
+
+            .agree-to-rules {
+                font-size: 0.9em; /* Texto de aceptar reglas más pequeño */
+                margin-bottom: 15px;
+            }
+
+            #continue-button, #send-message-button {
+                padding: 10px 20px; /* Botones más pequeños */
+                font-size: 1em;
+            }
+
+            .chat-title {
+                font-size: 1.4em; /* Título de chat más pequeño */
+            }
+
+            .chat-messages {
+                max-height: 250px; /* Altura de chat reducida */
+                padding: 10px;
+            }
+
+            .chat-message {
+                margin-bottom: 8px;
+            }
+
+            .message-username {
+                font-size: 0.9em;
+            }
+
+            .message-content {
+                font-size: 0.9em;
+            }
+
+            .chat-input-area {
+                flex-direction: column; /* Apila el input y el botón en móviles */
+                gap: 8px;
+            }
+
+            #message-input {
+                padding: 8px 12px;
+                font-size: 0.9em;
+            }
+
+            #send-message-button {
+                width: 100%; /* Botón de enviar ocupa todo el ancho */
+            }
+
+            #auth-button {
+                padding: 6px 10px;
+                font-size: 0.7em;
+                top: 10px;
+                right: 10px;
+            }
+
+            .admin-controls {
+                padding: 10px;
+            }
         }
     </style>
 </head>
